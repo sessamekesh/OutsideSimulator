@@ -8,6 +8,7 @@ using OutsideSimulator.D3DCore;
 using OutsideSimulator.Scene;
 using OutsideSimulator.Scene.Cameras;
 using OutsideSimulator.Effects;
+using OutsideSimulator.Commands;
 using System.Drawing;
 
 namespace OutsideSimulator
@@ -18,13 +19,7 @@ namespace OutsideSimulator
         protected Camera Camera;
         protected SceneGraph SceneGraph;
         protected Dirtyable<SlimDX.Matrix> ProjMatrix;
-        #endregion
-
-        #region REMOVE US PLZ
-        private float _radius;
-        private float _theta;
-        private float _phi;
-        private Point _lastMousePos;
+        protected CreateNewDefaultScene NewSceneCreator;
         #endregion
 
         #region Effects
@@ -46,42 +41,21 @@ namespace OutsideSimulator
         protected override void OnMouseDown(MouseEventArgs e)
         {
             base.OnMouseDown(e);
-            Capture = true;
-            _lastMousePos = e.Location;
         }
 
         protected override void OnMouseUp(MouseEventArgs e)
         {
             base.OnMouseUp(e);
-            Capture = false;
         }
 
         protected override void OnMouseWheel(MouseEventArgs e)
         {
             base.OnMouseWheel(e);
-
-            _radius -= e.Delta / 120.0f;
-
-            // TODO KAM: Implement utility math functions like Clamp
-            _radius = MathF.Clamp(_radius, 2.0f, 20.0f);
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
-
-            if (e.Button == MouseButtons.Left)
-            {
-                var dx = MathF.ToRadians(0.25f * (e.X - _lastMousePos.X));
-                var dy = MathF.ToRadians(0.25f * (e.Y - _lastMousePos.Y));
-
-                _theta += dx;
-                _phi += dy;
-
-                _phi = MathF.Clamp(_phi, 0.1f, MathF.PI - 0.1f);
-            }
-
-            _lastMousePos = e.Location;
         }
         #endregion
 
@@ -92,12 +66,6 @@ namespace OutsideSimulator
 
             // Update the camera
             Camera.Update(dt);
-
-            // TODO KAM: This is shit, but do it anyways.
-            (Camera as TestCamera).SetPosition(0.0f, 0.0f, _radius);
-
-            // TODO KAM: Update the rest of our scene
-            SceneGraph.Rotation = SlimDX.Quaternion.RotationYawPitchRoll(-_theta, _phi, 0.0f);
         }
 
         protected override void DrawScene()
@@ -127,14 +95,11 @@ namespace OutsideSimulator
             //
             // Other things...
             //
-            RenderEffects = new List<RenderEffect>();
-            Camera = new TestCamera(new SlimDX.Vector3(0.0f, 0.0f, -50.0f), new SlimDX.Vector3(0.0f, 0.0f, 0.0f), new SlimDX.Vector3(0.0f, 1.0f, 0.0f));
-            SceneGraph = new SceneGraph(SlimDX.Matrix.Identity);
-            SceneGraph.Renderable = new Renderable.TestRenderable();
+            // Create default scene
+            NewSceneCreator = new CreateNewDefaultScene();
+            NewSceneCreator.CreateNewScene(out Camera, out SceneGraph);
 
-            _phi = 0.0f;
-            _theta = 0.0f;
-            _radius = 5.0f;
+            RenderEffects = new List<RenderEffect>();
         }
 
         /// <summary>

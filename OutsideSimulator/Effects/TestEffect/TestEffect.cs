@@ -120,8 +120,8 @@ namespace OutsideSimulator.Effects.TestEffect
 
         private void RenderNode(SceneGraph Node, Camera Camera, SlimDX.Matrix ProjMatrix, int indexOffset, int vertexOffset, out int indicesConsumed, out int verticesConsumed)
         {
-            var ic = 0;
-            var vc = 0;
+            var ic = indexOffset;
+            var vc = vertexOffset;
 
             if (Node.Renderable != null)
             {
@@ -132,10 +132,10 @@ namespace OutsideSimulator.Effects.TestEffect
                 int nVerts = Node.Renderable.GetVertexList(EffectName()).Length;
 
                 // TODO KAM: This is horribly inefficient, change this!
-                ImmediateContext.DrawIndexed(Node.Renderable.GetIndexList(EffectName()).Length, indexOffset, vertexOffset);
+                ImmediateContext.DrawIndexed(nIndices, indexOffset, vertexOffset);
 
-                ic = nIndices;
-                vc = nVerts;
+                ic += nIndices;
+                vc += nVerts;
             }
 
             foreach (var Child in Node.Children)

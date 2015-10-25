@@ -31,9 +31,19 @@ namespace OutsideSimulator.Scene.Cameras
             LookAt = l;
         }
 
+        public void SetLookAt(float x, float y, float z)
+        {
+            LookAt = new Vector3(x, y, z);
+        }
+
         public void SetUp(Vector3 up)
         {
             Up = up;
+        }
+
+        public void SetUp(float x, float y, float z)
+        {
+            Up = new Vector3(x, y, z);
         }
     }
 }

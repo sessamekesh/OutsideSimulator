@@ -53,7 +53,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\CreateNewDefaultScene.cs" />
+    <Compile Include="Commands\ICommand.cs" />
+    <Compile Include="Commands\IUndo.cs" />
     <Compile Include="D3DCore\Dirtyable.cs" />
+    <Compile Include="D3DCore\GeometryGenerator.cs" />
     <Compile Include="D3DCore\MathF.cs" />
     <Compile Include="D3DCore\Util.cs" />
     <Compile Include="Effects\EffectBuildException.cs" />
@@ -72,6 +76,7 @@
     <Compile Include="D3DCore\GameTimer.cs" />
     <Compile Include="Renderable\CannotResolveIndicesException.cs" />
     <Compile Include="Renderable\CannotResolveVerticesException.cs" />
+    <Compile Include="Renderable\TerrainRenderable.cs" />
     <Compile Include="Renderable\TestRenderable.cs" />
     <Compile Include="Scene\Cameras\Camera.cs" />
     <Compile Include="Renderable\IRenderable.cs" />
