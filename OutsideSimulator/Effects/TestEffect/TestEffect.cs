@@ -93,7 +93,7 @@ namespace OutsideSimulator.Effects.TestEffect
 
             var vertBufferDesc = new BufferDescription(TestEffectVertex.Stride * verts.Length,
                 ResourceUsage.Default, BindFlags.VertexBuffer, CpuAccessFlags.None, ResourceOptionFlags.None, 0);
-            Util.ReleaseCom(ref VertexBuffer);
+            Util.ReleaseCom(ref VertexBuffer); // TODO KAM: Make this dirtyable instead
             VertexBuffer = new SlimDX.Direct3D11.Buffer(Device, new SlimDX.DataStream(verts, true, false), vertBufferDesc);
 
             var indexBuferDesc = new BufferDescription(

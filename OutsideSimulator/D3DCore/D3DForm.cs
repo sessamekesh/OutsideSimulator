@@ -104,7 +104,6 @@ namespace OutsideSimulator.D3DCore
                 }
 
                 // Create the depth/stencil buffer and view
-                // TODO KAM: On resize the window, do you need to resize the depth/stencil view?
                 var depthBufferDesc = new Texture2DDescription
                 {
                     ArraySize = 1,

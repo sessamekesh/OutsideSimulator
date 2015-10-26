@@ -10,8 +10,6 @@ namespace OutsideSimulator.Renderable
     /// </summary>
     public class TestRenderable : IRenderable
     {
-        // TODO KAM: You really need to remove this class
-
         public uint[] GetIndexList(string EffectName)
         {
             switch (EffectName)

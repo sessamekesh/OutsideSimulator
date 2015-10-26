@@ -1,7 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
 using SlimDX;
-using SlimDX.Direct3D11;
 
 namespace OutsideSimulator.Effects.TestEffect
 {

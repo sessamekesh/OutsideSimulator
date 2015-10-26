@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -54,17 +55,28 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\CreateNewDefaultScene.cs" />
+    <Compile Include="Commands\Events\MouseWheelSubscriber.cs" />
+    <Compile Include="Commands\Events\KeyDownSubscriber.cs" />
+    <Compile Include="Commands\Events\KeyUpSubscriber.cs" />
+    <Compile Include="Commands\Events\MouseDownSubscriber.cs" />
+    <Compile Include="Commands\Events\MouseMoveSubscriber.cs" />
+    <Compile Include="Commands\Events\MouseUpSubscriber.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\IUndo.cs" />
+    <Compile Include="Builders\MenuFactory.cs" />
     <Compile Include="D3DCore\Dirtyable.cs" />
     <Compile Include="D3DCore\GeometryGenerator.cs" />
     <Compile Include="D3DCore\MathF.cs" />
     <Compile Include="D3DCore\Util.cs" />
     <Compile Include="Effects\EffectBuildException.cs" />
+    <Compile Include="Effects\EffectRunException.cs" />
     <Compile Include="Effects\EffectsGlobals.cs" />
+    <Compile Include="Effects\MenuEffect\MenuEffect.cs" />
+    <Compile Include="Effects\MenuEffect\MenuEffectVertex.cs" />
     <Compile Include="Effects\RenderEffect.cs" />
     <Compile Include="Effects\TestEffect\TestEffect.cs" />
     <Compile Include="Effects\TestEffect\TestEffectVertex.cs" />
+    <Compile Include="Flyweights\TextureManager.cs" />
     <Compile Include="OutsideSimulatorApp.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -76,11 +88,14 @@
     <Compile Include="D3DCore\GameTimer.cs" />
     <Compile Include="Renderable\CannotResolveIndicesException.cs" />
     <Compile Include="Renderable\CannotResolveVerticesException.cs" />
+    <Compile Include="Renderable\ITextured.cs" />
+    <Compile Include="Renderable\MenuButton.cs" />
     <Compile Include="Renderable\TerrainRenderable.cs" />
     <Compile Include="Renderable\TestRenderable.cs" />
     <Compile Include="Scene\Cameras\Camera.cs" />
     <Compile Include="Renderable\IRenderable.cs" />
     <Compile Include="Scene\Cameras\TestCamera.cs" />
+    <Compile Include="Scene\Menu.cs" />
     <Compile Include="Scene\SceneGraph.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -107,6 +122,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="Effects\MenuEffect\MenuEffect.fx" />
     <Content Include="Effects\TestEffect\TestEffect.fx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

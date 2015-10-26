@@ -26,7 +26,6 @@ namespace OutsideSimulator.Renderable
         #endregion
 
         #region Ctor and IRenderable
-        // TODO KAM: Moar types
         public TerrainRenderable(float width, float depth, uint xsubs, uint zsubs)
         {
             GeometryGenerator.CreateGrid(width, depth, xsubs, zsubs, out Vertices, out Indices);

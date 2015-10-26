@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace OutsideSimulator.Effects
 {
-    public static class EffectsGlobals
+    public class EffectRunException : NotSupportedException
     {
-        public const string TestEffectName = "Test Effect";
-        public const string MenuEffectName = "Menu Effect";
+        public EffectRunException(string message) : base(message)
+        { }
     }
 }

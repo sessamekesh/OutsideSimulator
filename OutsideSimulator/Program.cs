@@ -16,7 +16,7 @@ namespace OutsideSimulator
         [STAThread]
         static void Main()
         {
-            OutsideSimulatorApp app = new OutsideSimulatorApp("Outside Simulator 2015");
+            OutsideSimulatorApp app = OutsideSimulatorApp.GetInstance();
             app.Begin();
         }
     }
