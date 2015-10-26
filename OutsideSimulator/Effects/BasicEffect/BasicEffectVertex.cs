@@ -5,7 +5,7 @@ using SlimDX;
 namespace OutsideSimulator.Effects.BasicEffect
 {
     [StructLayout(LayoutKind.Sequential)]
-    public class BasicEffectVertex
+    public struct BasicEffectVertex
     {
         public Vector3 Pos;
         public Vector2 TexCoord;

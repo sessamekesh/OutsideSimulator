@@ -93,17 +93,41 @@ namespace OutsideSimulator.Effects.BasicEffect
 
             // Build vertex and index buffer
             // TODO KAM: If nothing has changed, don't re-build the buffers maybe? But how to tell...
-            
+            var verts = GetAllVertices(SceneGraph);
+            var indices = GetAllIndices(SceneGraph);
+
+            var vertBufferDesc = new BufferDescription(BasicEffectVertex.Stride * verts.Length,
+                ResourceUsage.Default, BindFlags.VertexBuffer, CpuAccessFlags.None, ResourceOptionFlags.None, 0);
+            Util.ReleaseCom(ref VertexBuffer);
+            VertexBuffer = new SlimDX.Direct3D11.Buffer(Device, new DataStream(verts, false, false), vertBufferDesc);
+
+            var indexBufferDesc = new BufferDescription(sizeof(uint) * indices.Length,
+                ResourceUsage.Default, BindFlags.IndexBuffer, CpuAccessFlags.None, ResourceOptionFlags.None, 0);
+            Util.ReleaseCom(ref IndexBuffer);
+            IndexBuffer = new SlimDX.Direct3D11.Buffer(Device, new DataStream(indices, false, false), indexBufferDesc);
+
+            // Set vertex and index buffers
+            ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(VertexBuffer, BasicEffectVertex.Stride, 0));
+            ImmediateContext.InputAssembler.SetIndexBuffer(IndexBuffer, SlimDX.DXGI.Format.R32_UInt, 0);
+
+            // Render all nodes!
+            var renderPass = EffectTechnique.GetPassByIndex(0);
+            renderPass.Apply(ImmediateContext);
+            int a, b;
+            RenderNode(SceneGraph, Camera, ProjMatrix, 0, 0, out a, out b);
         }
 
         public string EffectName()
         {
-            throw new NotImplementedException();
+            return EffectsGlobals.BasicEffectName;
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            Util.ReleaseCom(ref VertexBuffer);
+            Util.ReleaseCom(ref IndexBuffer);
+            Util.ReleaseCom(ref InputLayout);
+            Util.ReleaseCom(ref Effect);
         }
         #endregion
 
@@ -117,6 +141,7 @@ namespace OutsideSimulator.Effects.BasicEffect
             {
                 WorldViewProj = Node.WorldTransform * Camera.GetViewMatrix() * ProjMatrix;
                 CPO_WorldViewProj.SetMatrix(WorldViewProj);
+                ImmediateContext.PixelShader.SetShaderResource(Flyweights.TextureManager.GetInstance().GetResource(Device, Node.Renderable.GetTexturePath()), 0);
 
                 int nIndices = Node.Renderable.GetIndexList(EffectName()).Length;
                 int nVerts = Node.Renderable.GetVertexList(EffectName()).Length;
@@ -126,6 +151,41 @@ namespace OutsideSimulator.Effects.BasicEffect
                 ic += nIndices;
                 vc += nVerts;
             }
+
+            foreach (var Child in Node.Children)
+            {
+                int cic, cvc;
+                RenderNode(Child.Value, Camera, ProjMatrix, indexOffset + ic, vertexOffset + vc, out cic, out cvc);
+                ic += cic;
+                vc += cvc;
+            }
+
+            indicesConsumed = ic;
+            verticesConsumed = vc;
+        }
+
+        private BasicEffectVertex[] GetAllVertices(SceneGraph Node)
+        {
+            IEnumerable<BasicEffectVertex> returnSet = (Node.Renderable == null) ? new BasicEffectVertex[] { } : Node.Renderable.GetVertexList(EffectName()).Cast<BasicEffectVertex>();
+
+            foreach (var Child in Node.Children)
+            {
+                returnSet = returnSet.Concat(GetAllVertices(Child.Value));
+            }
+
+            return returnSet.ToArray();
+        }
+
+        private uint[] GetAllIndices(SceneGraph Node)
+        {
+            IEnumerable<uint> returnSet = (Node.Renderable == null) ? new uint[] { } : Node.Renderable.GetIndexList(EffectName()).Cast<uint>();
+
+            foreach (var Child in Node.Children)
+            {
+                returnSet = returnSet.Concat(GetAllIndices(Child.Value));
+            }
+
+            return returnSet.ToArray();
         }
         #endregion
     }

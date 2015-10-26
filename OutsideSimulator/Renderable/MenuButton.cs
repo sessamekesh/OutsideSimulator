@@ -10,7 +10,7 @@ using OutsideSimulator.Commands;
 
 namespace OutsideSimulator.Renderable
 {
-    public class MenuButton : IRenderable, ITextured
+    public class MenuButton : IRenderable
     {
         #region Properties
         public string TextureLocation { get; private set; }

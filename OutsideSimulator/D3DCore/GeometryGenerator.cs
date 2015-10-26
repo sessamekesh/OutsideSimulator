@@ -22,9 +22,9 @@ namespace OutsideSimulator.D3DCore
         /// <param name="n">Subdivisions in the z direction</param>
         /// <param name="verts">Output array of vertex positions</param>
         /// <param name="indices">Output array of index positions</param>
-        public static void CreateGrid(float width, float depth, uint m, uint n, out Vector3[] verts, out uint[] indices)
+        public static void CreateGrid(float width, float depth, uint m, uint n, out Effects.BasicEffect.BasicEffectVertex[] verts, out uint[] indices)
         {
-            var vertList = new List<Vector3>();
+            var vertList = new List<Effects.BasicEffect.BasicEffectVertex>();
             var indexList = new List<uint>();
 
             var halfWidth = width * 0.5f;
@@ -33,13 +33,21 @@ namespace OutsideSimulator.D3DCore
             var dx = width / (n - 1);
             var dz = depth / (m - 1);
 
+            var du = 1.0f / (n - 1);
+            var dv = 1.0f / (m - 1);
+
             for (var i = 0; i < m; ++i)
             {
                 var z = halfDepth - i * dz;
                 for (var j = 0; j < n; ++j)
                 {
                     var x = -halfWidth + j * dx;
-                    vertList.Add(new Vector3(x, 0.0f, z));
+                    //vertList.Add(new Vector3(x, 0.0f, z));
+                    vertList.Add(new Effects.BasicEffect.BasicEffectVertex()
+                    {
+                        Pos = new Vector3(x, 0.0f, z),
+                        TexCoord = new Vector2(j * du, i * dv)
+                    });
                 }
             }
 

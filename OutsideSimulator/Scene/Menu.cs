@@ -28,7 +28,7 @@ namespace OutsideSimulator.Scene
     ///  1) Menu rendering information
     ///  2) Submenus and buttons to access them
     /// </summary>
-    public class Menu : IRenderable, ITextured, MouseDownSubscriber, MouseUpSubscriber, MouseMoveSubscriber, KeyDownSubscriber, KeyUpSubscriber
+    public class Menu : IRenderable, MouseDownSubscriber, MouseUpSubscriber, MouseMoveSubscriber, KeyDownSubscriber, KeyUpSubscriber
     {
         #region Properties
         public string MenuFilename { get; private set; }

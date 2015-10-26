@@ -247,7 +247,7 @@ namespace OutsideSimulator
                 throw new Exception("No render effects could be loaded!");
             }
 
-            ActiveRenderEffect = RenderEffects[0];
+            ActiveRenderEffect = RenderEffects[1];
         }
 
         /// <summary>
@@ -256,6 +256,9 @@ namespace OutsideSimulator
         /// </summary>
         protected void InitEffects()
         {
+            //
+            // World Rendering
+            //
             // Attempt to get our TestEffect...
             try
             {
@@ -266,6 +269,19 @@ namespace OutsideSimulator
                 MessageBox.Show("Could not build TestEffect!\n" + buildException.Message, WindowCaption);
             }
 
+            // Attempt to get our BasicEffect...
+            try
+            {
+                RenderEffects.Add(new Effects.BasicEffect.BasicEffect(Device));
+            }
+            catch (Effects.EffectBuildException buildException)
+            {
+                MessageBox.Show("Could not build BasicEffect!\n" + buildException.Message, WindowCaption);
+            }
+
+            //
+            // Specialized Rendering
+            //
             // Attempt to get MenuEffect...
             try
             {

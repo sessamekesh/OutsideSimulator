@@ -30,7 +30,7 @@ VertexOut BasicVS(VertexIn vin)
 {
 	VertexOut vout;
 
-	vout.PosH = mul(float4(vin.Position, 1.0f), gWorldViewProj);
+	vout.PositionH = mul(float4(vin.Position, 1.0f), gWorldViewProj);
 	vout.TexCoord = vin.TexCoord;
 
 	return vout;
@@ -50,5 +50,5 @@ technique11 BasicTechnique
 		SetVertexShader(CompileShader(vs_5_0, BasicVS()));
 		SetGeometryShader(NULL);
 		SetPixelShader(CompileShader(ps_5_0, BasicPS()));
-	};
+	}
 };

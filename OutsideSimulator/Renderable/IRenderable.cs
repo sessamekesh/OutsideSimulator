@@ -13,5 +13,7 @@ namespace OutsideSimulator.Renderable
     {
         object[] GetVertexList(string EffectName);
         uint[] GetIndexList(string EffectName);
+
+        string GetTexturePath();
     }
 }

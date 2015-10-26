@@ -90,7 +90,6 @@
     <Compile Include="D3DCore\GameTimer.cs" />
     <Compile Include="Renderable\CannotResolveIndicesException.cs" />
     <Compile Include="Renderable\CannotResolveVerticesException.cs" />
-    <Compile Include="Renderable\ITextured.cs" />
     <Compile Include="Renderable\MenuButton.cs" />
     <Compile Include="Renderable\TerrainRenderable.cs" />
     <Compile Include="Renderable\TestRenderable.cs" />

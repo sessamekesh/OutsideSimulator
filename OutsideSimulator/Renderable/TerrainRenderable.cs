@@ -21,7 +21,7 @@ namespace OutsideSimulator.Renderable
         protected int XSubdivisions { get; private set; }
         protected int ZSubdivisions { get; private set; }
 
-        protected Vector3[] Vertices;
+        protected Effects.BasicEffect.BasicEffectVertex[] Vertices;
         protected uint[] Indices;
         #endregion
 
@@ -36,6 +36,7 @@ namespace OutsideSimulator.Renderable
             switch (EffectName)
             {
                 case Effects.EffectsGlobals.TestEffectName:
+                case Effects.EffectsGlobals.BasicEffectName:
                     return Indices;
                 default:
                     throw new CannotResolveIndicesException(EffectName, RenderableName);
@@ -51,13 +52,27 @@ namespace OutsideSimulator.Renderable
                     {
                         return new Effects.TestEffect.TestEffectVertex()
                         {
-                            Pos = vert,
+                            Pos = vert.Pos,
                             Color = new Vector4(0.5f, 0.8f, 0.7f, 1.0f)
+                        };
+                    }).Cast<object>().ToArray();
+                case Effects.EffectsGlobals.BasicEffectName:
+                    return Vertices.Select((vert) =>
+                    {
+                        return new Effects.BasicEffect.BasicEffectVertex()
+                        {
+                            Pos = vert.Pos,
+                            TexCoord = vert.TexCoord
                         };
                     }).Cast<object>().ToArray();
                 default:
                     throw new CannotResolveVerticesException(EffectName, RenderableName);
             }
+        }
+
+        public string GetTexturePath()
+        {
+            return "../../assets/Terrains/Sand.dds";
         }
         #endregion
 

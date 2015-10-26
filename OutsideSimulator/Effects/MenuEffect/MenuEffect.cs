@@ -146,7 +146,7 @@ namespace OutsideSimulator.Effects.MenuEffect
             //
             // Render background...
             //
-            ImmediateContext.PixelShader.SetShaderResource(TextureManager.GetInstance().GetResource(Device, (SceneGraph.Renderable as ITextured).GetTexturePath()), 0);
+            ImmediateContext.PixelShader.SetShaderResource(TextureManager.GetInstance().GetResource(Device, SceneGraph.Renderable.GetTexturePath()), 0);
             ImmediateContext.DrawIndexed(sets[0].Item2, 0, 0);
 
             //

@@ -2,6 +2,7 @@
 using System.Linq;
 
 using OutsideSimulator.Effects.TestEffect;
+using OutsideSimulator.Effects.BasicEffect;
 
 namespace OutsideSimulator.Renderable
 {
@@ -15,6 +16,7 @@ namespace OutsideSimulator.Renderable
             switch (EffectName)
             {
                 case Effects.EffectsGlobals.TestEffectName:
+                case Effects.EffectsGlobals.BasicEffectName:
                     return new uint[]
                     {
                         // front
@@ -43,25 +45,41 @@ namespace OutsideSimulator.Renderable
 
         public object[] GetVertexList(string EffectName)
         {
-            if (EffectName == Effects.EffectsGlobals.TestEffectName)
+            switch (EffectName)
             {
-                // TODO KAM: I don't think the .Cast<object>().ToArray() is as efficient as it could be?
-                return new[]
-                {
-                    new TestEffectVertex { Pos = new SlimDX.Vector3(-1.0f, -1.0f, -1.0f), Color = new SlimDX.Vector4(1.0f, 1.0f, 1.0f, 1.0f) },
-                    new TestEffectVertex { Pos = new SlimDX.Vector3(-1.0f, 1.0f, -1.0f), Color = new SlimDX.Vector4(0.0f, 0.0f, 0.0f, 1.0f) },
-                    new TestEffectVertex { Pos = new SlimDX.Vector3(1.0f, 1.0f, -1.0f), Color = new SlimDX.Vector4(1.0f, 0.0f, 0.0f, 1.0f) },
-                    new TestEffectVertex { Pos = new SlimDX.Vector3(1.0f, -1.0f, -1.0f), Color = new SlimDX.Vector4(0.0f, 1.0f, 0.0f, 1.0f) },
-                    new TestEffectVertex { Pos = new SlimDX.Vector3(-1.0f, -1.0f, 1.0f), Color = new SlimDX.Vector4(0.0f, 0.0f, 1.0f, 1.0f) },
-                    new TestEffectVertex { Pos = new SlimDX.Vector3(-1.0f, 1.0f, 1.0f), Color = new SlimDX.Vector4(1.0f, 1.0f, 0.0f, 1.0f) },
-                    new TestEffectVertex { Pos = new SlimDX.Vector3(1.0f, 1.0f, 1.0f), Color = new SlimDX.Vector4(1.0f, 0.0f, 1.0f, 1.0f) },
-                    new TestEffectVertex { Pos = new SlimDX.Vector3(1.0f, -1.0f, 1.0f), Color = new SlimDX.Vector4(0.0f, 1.0f, 1.0f, 1.0f) }
-                }.Cast<object>().ToArray();
+                case Effects.EffectsGlobals.BasicEffectName:
+                    return new[]
+                    {
+                        new BasicEffectVertex { Pos = new SlimDX.Vector3(-1.0f, -1.0f, -1.0f), TexCoord = new SlimDX.Vector2(0.0f, 1.0f) },
+                        new BasicEffectVertex { Pos = new SlimDX.Vector3(-1.0f, 1.0f, -1.0f), TexCoord = new SlimDX.Vector2(0.0f, 0.0f) },
+                        new BasicEffectVertex { Pos = new SlimDX.Vector3(1.0f, 1.0f, -1.0f), TexCoord = new SlimDX.Vector2(1.0f, 0.0f) },
+                        new BasicEffectVertex { Pos = new SlimDX.Vector3(1.0f, -1.0f, -1.0f), TexCoord = new SlimDX.Vector2(1.0f, 1.0f) },
+                        new BasicEffectVertex { Pos = new SlimDX.Vector3(-1.0f, -1.0f, 1.0f), TexCoord = new SlimDX.Vector2(1.0f, 1.0f) },
+                        new BasicEffectVertex { Pos = new SlimDX.Vector3(-1.0f, 1.0f, 1.0f), TexCoord = new SlimDX.Vector2(1.0f, 0.0f) },
+                        new BasicEffectVertex { Pos = new SlimDX.Vector3(1.0f, 1.0f, 1.0f), TexCoord = new SlimDX.Vector2(0.0f, 0.0f) },
+                        new BasicEffectVertex { Pos = new SlimDX.Vector3(1.0f, -1.0f, 1.0f), TexCoord = new SlimDX.Vector2(0.0f, 1.0f) }
+
+                    }.Cast<object>().ToArray();
+                case Effects.EffectsGlobals.TestEffectName:
+                    return new[]
+                    {
+                        new TestEffectVertex { Pos = new SlimDX.Vector3(-1.0f, -1.0f, -1.0f), Color = new SlimDX.Vector4(1.0f, 1.0f, 1.0f, 1.0f) },
+                        new TestEffectVertex { Pos = new SlimDX.Vector3(-1.0f, 1.0f, -1.0f), Color = new SlimDX.Vector4(0.0f, 0.0f, 0.0f, 1.0f) },
+                        new TestEffectVertex { Pos = new SlimDX.Vector3(1.0f, 1.0f, -1.0f), Color = new SlimDX.Vector4(1.0f, 0.0f, 0.0f, 1.0f) },
+                        new TestEffectVertex { Pos = new SlimDX.Vector3(1.0f, -1.0f, -1.0f), Color = new SlimDX.Vector4(0.0f, 1.0f, 0.0f, 1.0f) },
+                        new TestEffectVertex { Pos = new SlimDX.Vector3(-1.0f, -1.0f, 1.0f), Color = new SlimDX.Vector4(0.0f, 0.0f, 1.0f, 1.0f) },
+                        new TestEffectVertex { Pos = new SlimDX.Vector3(-1.0f, 1.0f, 1.0f), Color = new SlimDX.Vector4(1.0f, 1.0f, 0.0f, 1.0f) },
+                        new TestEffectVertex { Pos = new SlimDX.Vector3(1.0f, 1.0f, 1.0f), Color = new SlimDX.Vector4(1.0f, 0.0f, 1.0f, 1.0f) },
+                        new TestEffectVertex { Pos = new SlimDX.Vector3(1.0f, -1.0f, 1.0f), Color = new SlimDX.Vector4(0.0f, 1.0f, 1.0f, 1.0f) }
+                    }.Cast<object>().ToArray();
+                default:
+                    throw new CannotResolveVerticesException(EffectName, RenderableName);
             }
-            else
-            {
-                throw new CannotResolveVerticesException(EffectName, RenderableName);
-            }
+        }
+
+        public string GetTexturePath()
+        {
+            return "../../assets/Crates/Wood1.jpg";
         }
 
         private readonly static string RenderableName = "TestRenderable";

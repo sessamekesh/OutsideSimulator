@@ -10,5 +10,6 @@ namespace OutsideSimulator.Effects
     {
         public const string TestEffectName = "Test Effect";
         public const string MenuEffectName = "Menu Effect";
+        public const string BasicEffectName = "Basic Effect";
     }
 }
