@@ -68,6 +68,8 @@
     <Compile Include="D3DCore\GeometryGenerator.cs" />
     <Compile Include="D3DCore\MathF.cs" />
     <Compile Include="D3DCore\Util.cs" />
+    <Compile Include="Effects\BasicEffect\BasicEffect.cs" />
+    <Compile Include="Effects\BasicEffect\BasicEffectVertex.cs" />
     <Compile Include="Effects\EffectBuildException.cs" />
     <Compile Include="Effects\EffectRunException.cs" />
     <Compile Include="Effects\EffectsGlobals.cs" />
@@ -122,6 +124,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="Effects\BasicEffect\BasicEffect.fx" />
     <Content Include="Effects\MenuEffect\MenuEffect.fx" />
     <Content Include="Effects\TestEffect\TestEffect.fx" />
   </ItemGroup>

@@ -32,8 +32,8 @@ namespace OutsideSimulator.Scene
     {
         #region Properties
         public string MenuFilename { get; private set; }
-        public List<Submenu> Submenus { get; set; }
-        public List<MenuAction> Actions { get; set; }
+        public List<Submenu> Submenus { get; protected set; }
+        public List<MenuAction> Actions { get; protected set; }
         public Menu ActiveMenu { get; protected set; }
 
         public MenuButton[] MenuButtons
@@ -51,6 +51,15 @@ namespace OutsideSimulator.Scene
 
         #region Logic
         private bool _isHotkeyPressed;
+        #endregion
+
+        #region Constants
+        private static readonly float amt = 0.72f;
+        private static readonly float _mbStartY = 0.52f;
+        private static readonly float _mbStartX = -0.6f;
+        private static readonly float _mbStopX = 0.6f;
+        private static readonly float _mbSpacingBetween = -0.19f;
+        private static readonly float _mbHeight = -0.164f;
         #endregion
 
         /// <summary>
@@ -72,6 +81,34 @@ namespace OutsideSimulator.Scene
 
             // Subscribe to our main application...
             OutsideSimulatorApp.GetInstance().Subscribe(this);
+        }
+
+        public void AddSubmenu(string MenuButtonTexturePath, Menu Submenu)
+        {
+            Submenus.Add(new Submenu(
+                new MenuButton(MenuButtonTexturePath, new SlimDX.Vector2(
+                    _mbStartX,
+                    _mbStartY + (Actions.Count + Submenus.Count) * _mbSpacingBetween
+                ), new SlimDX.Vector2(
+                    _mbStopX,
+                    _mbStartY + (Actions.Count + Submenus.Count) * _mbSpacingBetween + _mbHeight
+                )),
+                Submenu
+            ));
+        }
+
+        public void AddAction(string MenuButtonTexturePath, Action Action)
+        {
+            Actions.Add(new MenuAction(
+                new MenuButton(MenuButtonTexturePath, new SlimDX.Vector2(
+                    _mbStartX,
+                    _mbStartY + (Actions.Count + Submenus.Count) * _mbSpacingBetween
+                ), new SlimDX.Vector2(
+                    _mbStopX,
+                    _mbStartY + (Actions.Count + Submenus.Count) * _mbSpacingBetween + _mbHeight
+                )),
+                Action
+            ));
         }
 
         #region IRenderable
@@ -98,7 +135,6 @@ namespace OutsideSimulator.Scene
 
         public object[] GetVertexList(string EffectName)
         {
-            float amt = 0.9f;
             switch (EffectName)
             {
                 case Effects.EffectsGlobals.MenuEffectName:

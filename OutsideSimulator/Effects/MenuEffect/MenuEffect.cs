@@ -28,7 +28,6 @@ namespace OutsideSimulator.Effects.MenuEffect
 
         #region Shader Variables
         protected EffectVectorVariable CPO_BlendColor;
-        protected EffectResourceVariable SRV_Texture;
         #endregion
 
         #region Buffers
@@ -70,7 +69,6 @@ namespace OutsideSimulator.Effects.MenuEffect
             };
 
             CPO_BlendColor = Effect.GetVariableByName("gBlendColor").AsVector();
-            SRV_Texture = Effect.GetVariableByName("gDiffuseMap").AsResource();
 
             InputLayout = new InputLayout(Device, Technique.GetPassByIndex(0).Description.Signature, vertexDesc);
 
@@ -99,50 +97,65 @@ namespace OutsideSimulator.Effects.MenuEffect
 
             // Since a menu node is a root node (according to the scene graph),
             //  just draw it without traversing or recursing or any of that mess.
-            var verts = SceneGraph.Renderable.GetVertexList(EffectName()).Cast<MenuEffectVertex>().ToArray();
-            var indices = SceneGraph.Renderable.GetIndexList(EffectName());
+            var vertsList = new List<object>();
+            var indicesList = new List<uint>();
+            var sets = new List<Tuple<int, int>>();
+            vertsList.AddRange(SceneGraph.Renderable.GetVertexList(EffectName()));
+            indicesList.AddRange(SceneGraph.Renderable.GetIndexList(EffectName()));
+            sets.Add(new Tuple<int, int>(vertsList.Count, indicesList.Count));
 
             // TODO KAM: Remove this hack.
-            if (verts.Length == 0)
+            if (vertsList.Count == 0)
             {
                 return;
             }
 
-            var vertexBufferDesc = new BufferDescription(MenuEffectVertex.Stride * verts.Length,
+            // Render buttons individually, both action and submenu buttons
+            var menuButtons = (SceneGraph.Renderable as Menu).MenuButtons;
+            for (var i = 0; i < menuButtons.Length; i++)
+            {
+                vertsList.AddRange(menuButtons[i].GetVertexList(EffectName()));
+                indicesList.AddRange(menuButtons[i].GetIndexList(EffectName()));
+                sets.Add(new Tuple<int, int>(vertsList.Count - sets[sets.Count - 1].Item1, indicesList.Count - sets[sets.Count - 1].Item2));
+            }
+
+            var vertexBufferDesc = new BufferDescription(MenuEffectVertex.Stride * vertsList.Count,
                 ResourceUsage.Default, BindFlags.VertexBuffer, CpuAccessFlags.None, ResourceOptionFlags.None, 0);
             Util.ReleaseCom(ref VertexBuffer); // TODO KAM: Make this dirtyable instead
-            VertexBuffer = new SlimDX.Direct3D11.Buffer(Device, new SlimDX.DataStream(verts, true, false), vertexBufferDesc);
+            VertexBuffer = new SlimDX.Direct3D11.Buffer(Device, new SlimDX.DataStream(vertsList.Cast<MenuEffectVertex>().ToArray(), false, false), vertexBufferDesc);
 
             var indexBufferDesc = new BufferDescription(
-                sizeof(uint) * indices.Length,
+                sizeof(uint) * indicesList.Count,
                 ResourceUsage.Default,
                 BindFlags.IndexBuffer,
                 CpuAccessFlags.None,
                 ResourceOptionFlags.None,
                 0);
             Util.ReleaseCom(ref IndexBuffer);
-            IndexBuffer = new SlimDX.Direct3D11.Buffer(Device, new SlimDX.DataStream(indices, false, false), indexBufferDesc);
+            IndexBuffer = new SlimDX.Direct3D11.Buffer(Device, new SlimDX.DataStream(indicesList.ToArray(), false, false), indexBufferDesc);
 
             // Set buffers
             ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(VertexBuffer, MenuEffectVertex.Stride, 0));
             ImmediateContext.InputAssembler.SetIndexBuffer(IndexBuffer, SlimDX.DXGI.Format.R32_UInt, 0);
 
+            var renderPass = Technique.GetPassByIndex(0);
+            renderPass.Apply(ImmediateContext);
+            CPO_BlendColor.Set(new Vector4(1.0f, 1.0f, 1.0f, 0.8f)); // 80% opacity
+
             // TODO: Enable blending for a transparent background...
             //
             // Render background...
             //
-            CPO_BlendColor.Set(new Vector4(1.0f, 1.0f, 1.0f, 0.8f)); // 80% opacity
-            SRV_Texture.SetResource(TextureManager.GetInstance().GetResource(Device, (SceneGraph.Renderable as ITextured).GetTexturePath()));
+            ImmediateContext.PixelShader.SetShaderResource(TextureManager.GetInstance().GetResource(Device, (SceneGraph.Renderable as ITextured).GetTexturePath()), 0);
+            ImmediateContext.DrawIndexed(sets[0].Item2, 0, 0);
 
-            var renderPass = Technique.GetPassByIndex(0);
-            renderPass.Apply(ImmediateContext);
-            ImmediateContext.DrawIndexed(indices.Length, 0, 0);
-
-            // Render buttons individually, both action and submenu buttons
-            var menuButtons = (SceneGraph.Renderable as Menu).MenuButtons;
+            //
+            // Render each button...
+            //
             for (var i = 0; i < menuButtons.Length; i++)
             {
-                // I'll do this later.
+                ImmediateContext.PixelShader.SetShaderResource(TextureManager.GetInstance().GetResource(Device, menuButtons[i].GetTexturePath()), 0);
+                ImmediateContext.DrawIndexed(6, sets[i + 1].Item2, sets[i + 1].Item1);
             }
         }
         #endregion

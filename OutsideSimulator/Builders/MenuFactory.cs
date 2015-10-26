@@ -17,11 +17,8 @@ namespace OutsideSimulator.Builders
         {
             Menu MainMenu = new Menu("../../assets/MenuBases/MainMenu.dds", System.Windows.Forms.Keys.Escape);
 
-            // Add exit button
-            MainMenu.Actions.Add(new MenuAction(new Renderable.MenuButton("../../assets/MenuButtons/ExitButton.dds"), () =>
-            {
-                // TODO: Exit application
-            }));
+            MainMenu.AddAction("../../assets/MenuButtons/NewSimulation.dds", () => { });
+            MainMenu.AddAction("../../assets/MenuButtons/ExitButton.dds", () => { OutsideSimulatorApp.GetInstance().Close(); });
 
             return MainMenu;
         }
