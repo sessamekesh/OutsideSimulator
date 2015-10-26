@@ -21,5 +21,15 @@ namespace OutsideSimulator.D3DCore
         {
             return Math.Max(min, Math.Min(value, max));
         }
+
+        public static float SinF(float value)
+        {
+            return (float)Math.Sin(value);
+        }
+
+        public static float CosF(float value)
+        {
+            return (float)Math.Cos(value);
+        }
     }
 }

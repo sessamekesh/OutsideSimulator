@@ -95,6 +95,7 @@
     <Compile Include="Renderable\TestRenderable.cs" />
     <Compile Include="Scene\Cameras\Camera.cs" />
     <Compile Include="Renderable\IRenderable.cs" />
+    <Compile Include="Scene\Cameras\FlightCamera.cs" />
     <Compile Include="Scene\Cameras\TestCamera.cs" />
     <Compile Include="Scene\Menu.cs" />
     <Compile Include="Scene\SceneGraph.cs" />

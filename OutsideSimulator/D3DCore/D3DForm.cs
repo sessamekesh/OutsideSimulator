@@ -271,7 +271,7 @@ namespace OutsideSimulator.D3DCore
                 if (!AppPaused)
                 {
                     CalculateFrameRateStats();
-                    UpdateScene(1.0f / 60.0f);
+                    UpdateScene(Timer.DeltaTime);
                     DrawScene();
                 }
             });

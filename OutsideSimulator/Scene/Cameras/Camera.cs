@@ -89,12 +89,5 @@ namespace OutsideSimulator.Scene.Cameras
         /// </summary>
         /// <param name="dt">Time, in seconds, that has elapsed</param>
         public virtual void Update(float dt) { }
-
-        public virtual void OnKeyDown(KeyEventArgs e) { }
-        public virtual void OnKeyUp(KeyEventArgs e) { }
-        public virtual void OnMouseDown(MouseEventArgs e) { }
-        public virtual void OnMouseUp(MouseEventArgs e) { }
-        public virtual void OnMouseMove(MouseEventArgs e) { }
-        public virtual void OnMouseScroll(MouseEventArgs e) { }
     }
 }

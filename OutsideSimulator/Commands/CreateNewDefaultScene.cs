@@ -47,10 +47,7 @@ namespace OutsideSimulator.Commands
                 SceneGraph.AttachChild("CubeThing", CubeThing);
 
                 // Create default camera
-                var testCamera = new TestCamera();
-                testCamera.SetPosition(10.0f, 8.0f, 0.0f);
-                testCamera.SetUp(0.0f, 1.0f, 0.0f);
-                testCamera.SetLookAt(0.0f, 5.0f, -20.0f);
+                var testCamera = new FlightCamera(new SlimDX.Vector3(10.0f, 8.0f, 0.0f));
                 Camera = testCamera;
             }
             else
