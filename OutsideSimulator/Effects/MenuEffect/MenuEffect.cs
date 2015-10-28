@@ -21,6 +21,7 @@ namespace OutsideSimulator.Effects.MenuEffect
         protected InputLayout InputLayout;
         protected Effect Effect;
         protected EffectTechnique Technique;
+        protected EffectPass Pass;
         #endregion
 
         #region LogicVariables
@@ -28,6 +29,7 @@ namespace OutsideSimulator.Effects.MenuEffect
 
         #region Shader Variables
         protected EffectVectorVariable CPO_BlendColor;
+        protected EffectResourceVariable SRV_DiffuseMap;
         #endregion
 
         #region Buffers
@@ -69,6 +71,7 @@ namespace OutsideSimulator.Effects.MenuEffect
             };
 
             CPO_BlendColor = Effect.GetVariableByName("gBlendColor").AsVector();
+            SRV_DiffuseMap = Effect.GetVariableByName("gDiffuseMap").AsResource();
 
             InputLayout = new InputLayout(Device, Technique.GetPassByIndex(0).Description.Signature, vertexDesc);
 
@@ -138,15 +141,15 @@ namespace OutsideSimulator.Effects.MenuEffect
             ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(VertexBuffer, MenuEffectVertex.Stride, 0));
             ImmediateContext.InputAssembler.SetIndexBuffer(IndexBuffer, SlimDX.DXGI.Format.R32_UInt, 0);
 
-            var renderPass = Technique.GetPassByIndex(0);
-            renderPass.Apply(ImmediateContext);
+            Pass = Technique.GetPassByIndex(0);
             CPO_BlendColor.Set(new Vector4(1.0f, 1.0f, 1.0f, 0.8f)); // 80% opacity
 
             // TODO: Enable blending for a transparent background...
             //
             // Render background...
             //
-            ImmediateContext.PixelShader.SetShaderResource(TextureManager.GetInstance().GetResource(Device, SceneGraph.Renderable.GetTexturePath()), 0);
+            SRV_DiffuseMap.SetResource(TextureManager.GetInstance().GetResource(Device, SceneGraph.Renderable.GetTexturePath()));
+            Pass.Apply(ImmediateContext);
             ImmediateContext.DrawIndexed(sets[0].Item2, 0, 0);
 
             //
@@ -154,7 +157,8 @@ namespace OutsideSimulator.Effects.MenuEffect
             //
             for (var i = 0; i < menuButtons.Length; i++)
             {
-                ImmediateContext.PixelShader.SetShaderResource(TextureManager.GetInstance().GetResource(Device, menuButtons[i].GetTexturePath()), 0);
+                SRV_DiffuseMap.SetResource(TextureManager.GetInstance().GetResource(Device, menuButtons[i].GetTexturePath()));
+                Pass.Apply(ImmediateContext);
                 ImmediateContext.DrawIndexed(6, sets[i + 1].Item2, sets[i + 1].Item1);
             }
         }

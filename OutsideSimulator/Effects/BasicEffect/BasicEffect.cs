@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using OutsideSimulator.Scene;
 using OutsideSimulator.Scene.Cameras;
@@ -25,6 +22,7 @@ namespace OutsideSimulator.Effects.BasicEffect
         protected InputLayout InputLayout;
         protected Effect Effect;
         protected EffectTechnique EffectTechnique;
+        protected EffectPass Pass;
 
         protected SlimDX.Direct3D11.Buffer VertexBuffer;
         protected SlimDX.Direct3D11.Buffer IndexBuffer;
@@ -33,6 +31,8 @@ namespace OutsideSimulator.Effects.BasicEffect
         #region Shader Resources
         protected SlimDX.Matrix WorldViewProj;
         protected EffectMatrixVariable CPO_WorldViewProj;
+        protected EffectVectorVariable CPO_SelectionColor;
+        protected EffectResourceVariable SRV_BasicTexture;
         #endregion
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace OutsideSimulator.Effects.BasicEffect
                 "../../Effects/BasicEffect/BasicEffect.fx",
                 null,
                 "fx_5_0",
-                SlimDX.D3DCompiler.ShaderFlags.None,
+                SlimDX.D3DCompiler.ShaderFlags.Debug | SlimDX.D3DCompiler.ShaderFlags.SkipOptimization,
                 SlimDX.D3DCompiler.EffectFlags.None,
                 null,
                 null,
@@ -79,6 +79,9 @@ namespace OutsideSimulator.Effects.BasicEffect
 
             WorldViewProj = SlimDX.Matrix.Identity;
             CPO_WorldViewProj = Effect.GetVariableByName("gWorldViewProj").AsMatrix();
+            CPO_SelectionColor = Effect.GetVariableByName("gSelectionColor").AsVector();
+            SRV_BasicTexture = Effect.GetVariableByName("gBasicTexture").AsResource();
+
             InputLayout = new InputLayout(Device, EffectTechnique.GetPassByIndex(0).Description.Signature, vertexDesc);
 
             Util.ReleaseCom(ref compiledShader);
@@ -111,8 +114,7 @@ namespace OutsideSimulator.Effects.BasicEffect
             ImmediateContext.InputAssembler.SetIndexBuffer(IndexBuffer, SlimDX.DXGI.Format.R32_UInt, 0);
 
             // Render all nodes!
-            var renderPass = EffectTechnique.GetPassByIndex(0);
-            renderPass.Apply(ImmediateContext);
+            Pass = EffectTechnique.GetPassByIndex(0);
             int a, b;
             RenderNode(SceneGraph, Camera, ProjMatrix, 0, 0, out a, out b);
         }
@@ -141,11 +143,23 @@ namespace OutsideSimulator.Effects.BasicEffect
             {
                 WorldViewProj = Node.WorldTransform * Camera.GetViewMatrix() * ProjMatrix;
                 CPO_WorldViewProj.SetMatrix(WorldViewProj);
-                ImmediateContext.PixelShader.SetShaderResource(Flyweights.TextureManager.GetInstance().GetResource(Device, Node.Renderable.GetTexturePath()), 0);
+                SRV_BasicTexture.SetResource(Flyweights.TextureManager.GetInstance().GetResource(Device, Node.Renderable.GetTexturePath()));
+                //ImmediateContext.PixelShader.SetShaderResource(Flyweights.TextureManager.GetInstance().GetResource(Device, Node.Renderable.GetTexturePath()), 0);
 
                 int nIndices = Node.Renderable.GetIndexList(EffectName()).Length;
                 int nVerts = Node.Renderable.GetVertexList(EffectName()).Length;
 
+                // If selected, set the color:
+                if (OutsideSimulatorApp.GetInstance().ObjectPicker.ClickedNode == Node)
+                {
+                    CPO_SelectionColor.Set(new Color4(0.75f, 0.34f, 0.66f, 1.0f));
+                }
+                else
+                {
+                    CPO_SelectionColor.Set(new Color4(0.0f, 0.0f, 0.0f, 0.0f));
+                }
+
+                Pass.Apply(ImmediateContext);
                 ImmediateContext.DrawIndexed(nIndices, indexOffset, vertexOffset);
 
                 ic += nIndices;

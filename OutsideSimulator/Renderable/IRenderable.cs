@@ -1,4 +1,5 @@
-﻿
+﻿using SlimDX;
+
 namespace OutsideSimulator.Renderable
 {
     /// <summary>

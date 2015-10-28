@@ -18,13 +18,13 @@ namespace OutsideSimulator.Scene.Cameras
 
         #region Members
         private Vector3 _position;
-        protected Vector3 Position
+        public Vector3 Position
         {
             get
             {
                 return _position;
             }
-            set
+            protected set
             {
                 _position = value;
                 ViewMatrix.DoTheNasty();
@@ -32,13 +32,13 @@ namespace OutsideSimulator.Scene.Cameras
         }
 
         private Vector3 _lookat;
-        protected Vector3 LookAt
+        public Vector3 LookAt
         {
             get
             {
                 return _lookat;
             }
-            set
+            protected set
             {
                 _lookat = value;
                 ViewMatrix.DoTheNasty();
@@ -46,13 +46,13 @@ namespace OutsideSimulator.Scene.Cameras
         }
 
         private Vector3 _up;
-        protected Vector3 Up
+        public Vector3 Up
         {
             get
             {
                 return _up;
             }
-            set
+            protected set
             {
                 _up = value;
                 ViewMatrix.DoTheNasty();

@@ -1,6 +1,7 @@
 ﻿cbuffer cbPerObject
 {
 	float4x4 gWorldViewProj;
+	float4 gSelectionColor;
 };
 
 Texture2D gBasicTexture;
@@ -23,6 +24,7 @@ struct VertexIn
 struct VertexOut
 {
 	float4 PositionH : SV_POSITION;
+	float4 SelColor : COLOR;
 	float2 TexCoord : TEXCOORD;
 };
 
@@ -32,6 +34,7 @@ VertexOut BasicVS(VertexIn vin)
 
 	vout.PositionH = mul(float4(vin.Position, 1.0f), gWorldViewProj);
 	vout.TexCoord = vin.TexCoord;
+	vout.SelColor = gSelectionColor.rgba;
 
 	return vout;
 }
@@ -40,7 +43,14 @@ float4 BasicPS(VertexOut pin) : SV_Target
 {
 	float4 texColor = gBasicTexture.Sample(samAnisotropic, pin.TexCoord);
 
-	return texColor;
+	if (pin.SelColor.r < 0.01f)
+	{
+		return texColor;
+	}
+	else
+	{
+		return texColor * float4(0.5f, 0.5f, 0.5f, 0.5f) + pin.SelColor * float4(0.5f, 0.5f, 0.5f, 0.5f);
+	}
 }
 
 technique11 BasicTechnique

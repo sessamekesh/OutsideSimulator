@@ -1,4 +1,7 @@
 ﻿using System.Collections.Generic;
+using System;
+
+using System.Linq;
 
 using SlimDX;
 
@@ -131,6 +134,22 @@ namespace OutsideSimulator.Scene
             //
             Parent = null;
             Children = new Dictionary<string, SceneGraph>();
+        }
+
+        public BoundingBox? GetBoundingBox()
+        {
+            if (Renderable == null)
+            {
+                return null;
+            }
+            else
+            {
+                return BoundingBox.FromPoints(
+                    Renderable.GetVertexList(Effects.EffectsGlobals.BasicEffectName).Select((x) =>
+                    {
+                        return ((Effects.BasicEffect.BasicEffectVertex)x).Pos;
+                    }).ToArray());
+            }
         }
 
         public void AttachChild(string Name, SceneGraph Child)

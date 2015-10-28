@@ -11,6 +11,7 @@ using OutsideSimulator.Effects;
 using OutsideSimulator.Commands;
 using OutsideSimulator.Commands.Events;
 using OutsideSimulator.Flyweights;
+using OutsideSimulator.Scene.UserInteractions;
 using System.Drawing;
 
 namespace OutsideSimulator
@@ -30,6 +31,10 @@ namespace OutsideSimulator
         protected SceneGraph SceneGraph;
         protected Dirtyable<SlimDX.Matrix> ProjMatrix;
         protected CreateNewDefaultScene NewSceneCreator;
+        #endregion
+
+        #region Logic / Interactions
+        public ObjectPicker ObjectPicker { get; protected set; }
         #endregion
 
         #region Effects
@@ -239,6 +244,9 @@ namespace OutsideSimulator
             NewSceneCreator.CreateNewScene(out Camera, out defaultScene);
             SceneGraph.AttachChild("Scene", defaultScene);
 
+            // Initialize our picker
+            ObjectPicker = new Scene.UserInteractions.ObjectPicker();
+
             InitEffects();
 
             // Use the first valid render effect, if exists
@@ -306,6 +314,33 @@ namespace OutsideSimulator
             }
 
             base.Dispose(disposing);
+        }
+        #endregion
+
+        #region Accessors
+        public SceneGraph SceneRootNode
+        {
+            get
+            {
+                if (SceneGraph == null) return null;
+                else return SceneGraph.Children["Scene"];
+            }
+        }
+
+        public Camera SceneCamera
+        {
+            get
+            {
+                return Camera;
+            }
+        }
+
+        public SlimDX.Matrix ProjectionMatrix
+        {
+            get
+            {
+                return ProjMatrix.Value;
+            }
         }
         #endregion
     }
