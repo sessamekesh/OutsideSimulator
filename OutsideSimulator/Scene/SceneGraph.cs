@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System;
 
+using System.Xml.Linq;
 using System.Linq;
 
 using SlimDX;
@@ -157,6 +158,32 @@ namespace OutsideSimulator.Scene
         {
             Children.Add(Name, Child);
             Child.Parent = this;
+        }
+
+        public static SceneGraph Deserialize(string XMLString)
+        {
+            // TODO KAM: Complete the deserialize here (and also in your actions, camera...)
+            return null;
+        }
+
+        public static string Serialize(SceneGraph SceneGraph)
+        {
+            var tr = new XElement("SceneGraph",
+                new XElement("Translation", Util.SerializeVector(SceneGraph.Translation)),
+                new XElement("Rotation", Util.SerializeQuaternion(SceneGraph.Rotation)),
+                new XElement("Scaling", Util.SerializeVector(SceneGraph.Scale)),
+                new XElement("Renderable", RenderableFactory.Serialize(SceneGraph.Renderable))
+            );
+
+            foreach (var Child in SceneGraph.Children)
+            {
+                tr.Add(new XElement("Child",
+                    new XElement("Name", Child.Key),
+                    Serialize(Child.Value)
+                ));
+            }
+
+            return tr.ToString();
         }
     }
 }

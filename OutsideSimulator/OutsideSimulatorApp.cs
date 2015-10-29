@@ -37,7 +37,7 @@ namespace OutsideSimulator
         public ObjectPicker ObjectPicker { get; protected set; }
         public ObjectSpawner ObjectSpawner { get; protected set; }
 
-        public Stack<IUndo> CommandStack { get; protected set; }
+        public CommandStack CommandStack;
         #endregion
 
         #region Effects
@@ -226,6 +226,9 @@ namespace OutsideSimulator
             MouseUpSubscribers = new List<MouseUpSubscriber>();
             TimerTickSubscribers = new List<TimerTickSubscriber>();
 
+            CommandStack = new CommandStack();
+            Subscribe(CommandStack);
+
             RenderEffects = new List<RenderEffect>();
         }
 
@@ -262,7 +265,6 @@ namespace OutsideSimulator
             // Initialize our picker
             ObjectPicker = new ObjectPicker();
             ObjectSpawner = new ObjectSpawner();
-            CommandStack = new Stack<IUndo>();
             Subscribe(ObjectSpawner);
 
             InitEffects();

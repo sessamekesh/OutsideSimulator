@@ -18,8 +18,8 @@ namespace OutsideSimulator.Renderable
         #region Properties
         public float Width { get; private set; }
         public float Depth { get; private set; }
-        protected int XSubdivisions { get; private set; }
-        protected int ZSubdivisions { get; private set; }
+        public uint XSubdivisions { get; private set; }
+        public uint ZSubdivisions { get; private set; }
 
         protected Effects.BasicEffect.BasicEffectVertex[] Vertices;
         protected uint[] Indices;
@@ -28,6 +28,10 @@ namespace OutsideSimulator.Renderable
         #region Ctor and IRenderable
         public TerrainRenderable(float width, float depth, uint xsubs, uint zsubs)
         {
+            Width = width;
+            Depth = depth;
+            XSubdivisions = xsubs;
+            ZSubdivisions = zsubs;
             GeometryGenerator.CreateGrid(width, depth, xsubs, zsubs, out Vertices, out Indices);
         }
 

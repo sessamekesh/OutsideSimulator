@@ -54,6 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\CommandStack.cs" />
     <Compile Include="Commands\CreateNewDefaultScene.cs" />
     <Compile Include="Commands\CreateObject.cs" />
     <Compile Include="Commands\Events\MouseWheelSubscriber.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\IUndo.cs" />
     <Compile Include="Builders\MenuFactory.cs" />
+    <Compile Include="Commands\OutsideFileGenerator.cs" />
     <Compile Include="D3DCore\Dirtyable.cs" />
     <Compile Include="D3DCore\GeometryGenerator.cs" />
     <Compile Include="D3DCore\MathF.cs" />
@@ -94,6 +96,7 @@
     <Compile Include="Renderable\CannotResolveIndicesException.cs" />
     <Compile Include="Renderable\CannotResolveVerticesException.cs" />
     <Compile Include="Renderable\MenuButton.cs" />
+    <Compile Include="Renderable\RenderableFactory.cs" />
     <Compile Include="Renderable\TerrainRenderable.cs" />
     <Compile Include="Renderable\TestRenderable.cs" />
     <Compile Include="Scene\Cameras\Camera.cs" />
