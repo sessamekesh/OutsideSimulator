@@ -20,6 +20,8 @@ namespace OutsideSimulator.Scene.Cameras
         private bool _isDDown;
         private bool _isRightMouseDown;
 
+        private bool _isShiftDown;
+
         private Point _lastMousePos;
 
         private float _forwardSpeed;
@@ -27,12 +29,11 @@ namespace OutsideSimulator.Scene.Cameras
 
         private float _phi;
         private float _theta;
-
         protected SlimDX.Vector3 BasePosition;
         #endregion
 
         #region Rate Constantes
-        public readonly float FlyRate = 15.0f;
+        public readonly float FlyRate = 40.0f;
         public readonly float RotateRate = 0.003f;
         #endregion
 
@@ -43,6 +44,7 @@ namespace OutsideSimulator.Scene.Cameras
             _isSDown = false;
             _isADown = false;
             _isDDown = false;
+            _isShiftDown = false;
 
             _isRightMouseDown = false;
 
@@ -94,6 +96,9 @@ namespace OutsideSimulator.Scene.Cameras
                     Console.WriteLine("Camera Position: " + Position.X + ", " + Position.Y + ", " + Position.Z);
                     Console.WriteLine("Camera LookAt: " + LookAt.X + ", " + LookAt.Y + ", " + LookAt.Z);
                     break;
+                case Keys.ShiftKey:
+                    _isShiftDown = true;
+                    break;
             }
         }
 
@@ -128,6 +133,9 @@ namespace OutsideSimulator.Scene.Cameras
                         _rightSpeed = -1.0f;
                     else
                         _rightSpeed = 0.0f;
+                    break;
+                case Keys.ShiftKey:
+                    _isShiftDown = false;
                     break;
             }
         }
@@ -166,7 +174,7 @@ namespace OutsideSimulator.Scene.Cameras
             SlimDX.Vector3 ForwardDir = LookAt - Position;
             SlimDX.Vector3 RightDir = SlimDX.Vector3.Cross(ForwardDir, Up) * -1.0f;
 
-            BasePosition += ((ForwardDir * _forwardSpeed * FlyRate) + (RightDir * _rightSpeed * FlyRate)) * dt;
+            BasePosition += ((ForwardDir * _forwardSpeed * FlyRate) + (RightDir * _rightSpeed * FlyRate)) * dt * ((_isShiftDown) ? 0.03f : 1.0f);
 
             // Get camera position from polar coords, plus camera origin
             var x = MathF.SinF(_phi) * MathF.CosF(_theta);

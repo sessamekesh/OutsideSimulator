@@ -36,6 +36,8 @@ namespace OutsideSimulator
         #region Logic / Interactions
         public ObjectPicker ObjectPicker { get; protected set; }
         public ObjectSpawner ObjectSpawner { get; protected set; }
+
+        public Stack<IUndo> CommandStack { get; protected set; }
         #endregion
 
         #region Effects
@@ -51,6 +53,7 @@ namespace OutsideSimulator
         protected List<MouseMoveSubscriber> MouseMoveSubscribers;
         protected List<MouseUpSubscriber> MouseUpSubscribers;
         protected List<MouseWheelSubscriber> MouseWheelSubscribers;
+        protected List<TimerTickSubscriber> TimerTickSubscribers;
 
         /// <summary>
         /// Subscribe to all appropriate actions in this form
@@ -70,6 +73,8 @@ namespace OutsideSimulator
                 MouseUpSubscribers.Add(Subscriber as MouseUpSubscriber);
             if (Subscriber is MouseWheelSubscriber)
                 MouseWheelSubscribers.Add(Subscriber as MouseWheelSubscriber);
+            if (Subscriber is TimerTickSubscriber)
+                TimerTickSubscribers.Add(Subscriber as TimerTickSubscriber);
         }
 
         /// <summary>
@@ -90,6 +95,8 @@ namespace OutsideSimulator
                 MouseUpSubscribers.Remove(Subscriber as MouseUpSubscriber);
             if (Subscriber is MouseWheelSubscriber)
                 MouseWheelSubscribers.Remove(Subscriber as MouseWheelSubscriber);
+            if (Subscriber is TimerTickSubscriber)
+                TimerTickSubscribers.Remove(Subscriber as TimerTickSubscriber);
         }
         #endregion
 
@@ -170,7 +177,13 @@ namespace OutsideSimulator
         {
             base.UpdateScene(dt);
 
+            for (var i = 0; i < TimerTickSubscribers.Count; i++)
+            {
+                TimerTickSubscribers[i].Update(dt);
+            }
+
             // Update the camera
+            // TODO KAM: Make this a subscriber (it should be)
             Camera.Update(dt);
         }
 
@@ -211,6 +224,7 @@ namespace OutsideSimulator
             MouseWheelSubscribers = new List<MouseWheelSubscriber>();
             MouseMoveSubscribers = new List<MouseMoveSubscriber>();
             MouseUpSubscribers = new List<MouseUpSubscriber>();
+            TimerTickSubscribers = new List<TimerTickSubscriber>();
 
             RenderEffects = new List<RenderEffect>();
         }
@@ -248,6 +262,7 @@ namespace OutsideSimulator
             // Initialize our picker
             ObjectPicker = new ObjectPicker();
             ObjectSpawner = new ObjectSpawner();
+            CommandStack = new Stack<IUndo>();
             Subscribe(ObjectSpawner);
 
             InitEffects();

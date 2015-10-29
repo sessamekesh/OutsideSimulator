@@ -32,7 +32,7 @@ namespace OutsideSimulator.D3DCore
         protected DeviceContext ImmediateContext;
         protected Viewport Viewport;
         protected RenderTargetView RenderTargetView;
-        protected Texture2D DepthBuffer;
+        protected Texture2D DepthStencilBuffer;
         protected DepthStencilView DepthStencilView;
         protected DepthStencilState DepthStencilState;
         #endregion
@@ -94,7 +94,7 @@ namespace OutsideSimulator.D3DCore
                 // Do things here.
                 Util.ReleaseCom(ref RenderTargetView);
                 Util.ReleaseCom(ref DepthStencilView);
-                Util.ReleaseCom(ref DepthBuffer);
+                Util.ReleaseCom(ref DepthStencilBuffer);
 
                 // Resize the render target
                 SwapChain.ResizeBuffers(1, ClientSize.Width, ClientSize.Height, Format.R8G8B8A8_UNorm, SwapChainFlags.None);
@@ -118,7 +118,7 @@ namespace OutsideSimulator.D3DCore
                     Usage = ResourceUsage.Default
                 };
 
-                DepthBuffer = new Texture2D(Device, depthBufferDesc);
+                DepthStencilBuffer = new Texture2D(Device, depthBufferDesc);
 
                 var depthStencilViewDesc = new DepthStencilViewDescription
                 {
@@ -130,9 +130,9 @@ namespace OutsideSimulator.D3DCore
                     FirstArraySlice = 0
                 };
 
-                DepthStencilView = new DepthStencilView(Device, DepthBuffer, depthStencilViewDesc);
+                DepthStencilView = new DepthStencilView(Device, DepthStencilBuffer, depthStencilViewDesc);
 
-                ImmediateContext.OutputMerger.SetTargets(RenderTargetView);
+                ImmediateContext.OutputMerger.SetTargets(DepthStencilView, RenderTargetView);
 
                 // Set up viewport, render target (back buffer on swap chain), and render target view
                 // TODO KAM: Do the viewports actually need adjusting here? Probably?
@@ -206,7 +206,6 @@ namespace OutsideSimulator.D3DCore
             {
                 RenderTargetView = new RenderTargetView(Device, resource);
             }
-            ImmediateContext.OutputMerger.SetTargets(RenderTargetView);
 
             // Create the depth/stencil buffer and view
             // TODO KAM: On resize the window, do you need to resize the depth/stencil view?
@@ -224,7 +223,7 @@ namespace OutsideSimulator.D3DCore
                 Usage = ResourceUsage.Default
             };
 
-            DepthBuffer = new Texture2D(Device, depthBufferDesc);
+            DepthStencilBuffer = new Texture2D(Device, depthBufferDesc);
 
             var depthStencilViewDesc = new DepthStencilViewDescription
             {
@@ -236,7 +235,9 @@ namespace OutsideSimulator.D3DCore
                 FirstArraySlice = 0
             };
 
-            DepthStencilView = new DepthStencilView(Device, DepthBuffer, depthStencilViewDesc);
+            DepthStencilView = new DepthStencilView(Device, DepthStencilBuffer, depthStencilViewDesc);
+
+            ImmediateContext.OutputMerger.SetTargets(DepthStencilView, RenderTargetView);
 
             // Set up the depth/stencil state description
             var dsStateDesc = new DepthStencilStateDescription
@@ -292,7 +293,7 @@ namespace OutsideSimulator.D3DCore
                     // Release all COM here
                     Util.ReleaseCom(ref DepthStencilState);
                     Util.ReleaseCom(ref DepthStencilView);
-                    Util.ReleaseCom(ref DepthBuffer);
+                    Util.ReleaseCom(ref DepthStencilBuffer);
                     Util.ReleaseCom(ref RenderTargetView);
 
                     if (SwapChain.IsFullScreen)

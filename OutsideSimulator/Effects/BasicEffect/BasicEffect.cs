@@ -170,8 +170,8 @@ namespace OutsideSimulator.Effects.BasicEffect
             {
                 int cic, cvc;
                 RenderNode(Child.Value, Camera, ProjMatrix, indexOffset + ic, vertexOffset + vc, out cic, out cvc);
-                ic += cic;
-                vc += cvc;
+                ic = cic;
+                vc = cvc;
             }
 
             indicesConsumed = ic;
