@@ -55,12 +55,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\CreateNewDefaultScene.cs" />
+    <Compile Include="Commands\CreateObject.cs" />
     <Compile Include="Commands\Events\MouseWheelSubscriber.cs" />
     <Compile Include="Commands\Events\KeyDownSubscriber.cs" />
     <Compile Include="Commands\Events\KeyUpSubscriber.cs" />
     <Compile Include="Commands\Events\MouseDownSubscriber.cs" />
     <Compile Include="Commands\Events\MouseMoveSubscriber.cs" />
     <Compile Include="Commands\Events\MouseUpSubscriber.cs" />
+    <Compile Include="Commands\Events\TimerTickSubscriber.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\IUndo.cs" />
     <Compile Include="Builders\MenuFactory.cs" />
@@ -101,6 +103,7 @@
     <Compile Include="Scene\Menu.cs" />
     <Compile Include="Scene\SceneGraph.cs" />
     <Compile Include="Scene\UserInteractions\ObjectPicker.cs" />
+    <Compile Include="Scene\UserInteractions\ObjectSpawner.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -126,6 +129,18 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="assets\Crates\Wood1.dds" />
+    <Content Include="assets\Crates\Wood1.jpg" />
+    <Content Include="assets\MenuBase.bmp" />
+    <Content Include="assets\MenuBases\MainMenu.bmp" />
+    <Content Include="assets\MenuBases\MainMenu.dds" />
+    <Content Include="assets\MenuButtons\BaseButton.bmp" />
+    <Content Include="assets\MenuButtons\ExitButton.bmp" />
+    <Content Include="assets\MenuButtons\ExitButton.dds" />
+    <Content Include="assets\MenuButtons\NewSimulation.bmp" />
+    <Content Include="assets\MenuButtons\NewSimulation.dds" />
+    <Content Include="assets\Terrains\Sand.dds" />
+    <Content Include="assets\Terrains\Sand.jpg" />
     <Content Include="Effects\BasicEffect\BasicEffect.fx" />
     <Content Include="Effects\MenuEffect\MenuEffect.fx" />
     <Content Include="Effects\TestEffect\TestEffect.fx" />

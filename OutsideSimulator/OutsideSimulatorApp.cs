@@ -35,6 +35,7 @@ namespace OutsideSimulator
 
         #region Logic / Interactions
         public ObjectPicker ObjectPicker { get; protected set; }
+        public ObjectSpawner ObjectSpawner { get; protected set; }
         #endregion
 
         #region Effects
@@ -245,7 +246,9 @@ namespace OutsideSimulator
             SceneGraph.AttachChild("Scene", defaultScene);
 
             // Initialize our picker
-            ObjectPicker = new Scene.UserInteractions.ObjectPicker();
+            ObjectPicker = new ObjectPicker();
+            ObjectSpawner = new ObjectSpawner();
+            Subscribe(ObjectSpawner);
 
             InitEffects();
 

@@ -99,7 +99,7 @@ namespace OutsideSimulator.Scene
         #region Methods
         #endregion
 
-        public SceneGraph(Matrix transformMatrix)
+        public SceneGraph(Matrix transformMatrix, IRenderable renderable = null)
         {
             //
             // Setup dirtyables...
@@ -134,6 +134,7 @@ namespace OutsideSimulator.Scene
             //
             Parent = null;
             Children = new Dictionary<string, SceneGraph>();
+            Renderable = renderable;
         }
 
         public BoundingBox? GetBoundingBox()

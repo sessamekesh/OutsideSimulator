@@ -32,7 +32,7 @@ namespace OutsideSimulator.Scene.Cameras
         #endregion
 
         #region Rate Constantes
-        public readonly float FlyRate = 0.015f;
+        public readonly float FlyRate = 15.0f;
         public readonly float RotateRate = 0.003f;
         #endregion
 
@@ -166,7 +166,7 @@ namespace OutsideSimulator.Scene.Cameras
             SlimDX.Vector3 ForwardDir = LookAt - Position;
             SlimDX.Vector3 RightDir = SlimDX.Vector3.Cross(ForwardDir, Up) * -1.0f;
 
-            BasePosition += (ForwardDir * _forwardSpeed * FlyRate) + (RightDir * _rightSpeed * FlyRate);
+            BasePosition += ((ForwardDir * _forwardSpeed * FlyRate) + (RightDir * _rightSpeed * FlyRate)) * dt;
 
             // Get camera position from polar coords, plus camera origin
             var x = MathF.SinF(_phi) * MathF.CosF(_theta);

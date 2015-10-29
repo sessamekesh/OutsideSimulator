@@ -17,7 +17,7 @@ namespace OutsideSimulator.Scene.UserInteractions
     public class ObjectPicker : MouseDownSubscriber, MouseUpSubscriber
     {
         #region Logical Members
-        public SceneGraph ClickedNode { get; protected set; }
+        public SceneGraph ClickedNode { get; set; }
         #endregion
 
         public ObjectPicker()
