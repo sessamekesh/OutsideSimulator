@@ -9,18 +9,22 @@ namespace OutsideSimulator.Scene
 {
     public struct Submenu
     {
-        public MenuButton Button { get; private set; }
-        public Menu Menu { get; private set; }
+        private MenuButton _button;
+        public MenuButton Button { get { return _button; } private set { _button = value; } }
+        private Menu _menu;
+        public Menu Menu { get { return _menu; } private set { _menu = value; } }
 
-        public Submenu(MenuButton btn, Menu mnu) { Button = btn;  Menu = mnu; }
+        public Submenu(MenuButton btn, Menu mnu) { _button = btn;  _menu = mnu; }
     }
 
     public struct MenuAction
     {
-        public MenuButton Button { get; private set; }
-        public Action Action { get; private set; }
+        private MenuButton _btn;
+        public MenuButton Button { get { return _btn; } private set { _btn = value; } }
+        private Action _act;
+        public Action Action { get { return _act; } private set { _act = value; } }
 
-        public MenuAction(MenuButton btn, Action actn) { Button = btn;  Action = actn; }
+        public MenuAction(MenuButton btn, Action actn) { _btn = btn;  _act= actn; }
     }
 
     /// <summary>
