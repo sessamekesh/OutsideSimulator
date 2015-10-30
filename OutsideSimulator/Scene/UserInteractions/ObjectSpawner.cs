@@ -32,56 +32,68 @@ namespace OutsideSimulator.Scene.UserInteractions
         public SceneGraph LastPickedObject { get; protected set; }
         #endregion
 
+        #region Logic
+        public void NewPlaceAction()
+        {
+            if (IsPlacing)
+            {
+                PlacingID++;
+                PlacingID %= RenderableList.Count;
+
+                IRenderable CreatedRenderable;
+                CreatedRenderable = System.Activator.CreateInstance(RenderableList[PlacingID]) as IRenderable;
+                CreateObject.Undo();
+                OutsideSimulatorApp.GetInstance().ObjectPicker.ClickedNode = LastPickedObject;
+                Cameras.Camera SceneCamera = OutsideSimulatorApp.GetInstance().SceneCamera;
+                Vector3 lav = (SceneCamera.LookAt - SceneCamera.Position);
+                lav.Normalize();
+                CreateObject = new Commands.CreateObject(
+                    CreatedRenderable,
+                    Matrix.Translation(SceneCamera.Position
+                    + lav * frontDist));
+                CreateObject.Redo();
+                OutsideSimulatorApp.GetInstance().ObjectPicker.ClickedNode = CreateObject.ParentNode.Children[CreateObject.ChildName];
+            }
+            else
+            {
+                IsPlacing = true;
+                PlacingID = 0;
+
+                IRenderable CreatedRenderable;
+                CreatedRenderable = System.Activator.CreateInstance(RenderableList[PlacingID]) as IRenderable;
+                Cameras.Camera SceneCamera = OutsideSimulatorApp.GetInstance().SceneCamera;
+                Vector3 lav = (SceneCamera.LookAt - SceneCamera.Position);
+                lav.Normalize();
+                LastPickedObject = OutsideSimulatorApp.GetInstance().ObjectPicker.ClickedNode;
+                CreateObject = new Commands.CreateObject(
+                    CreatedRenderable,
+                    Matrix.Translation(SceneCamera.Position
+                    + lav * frontDist));
+                CreateObject.Redo();
+                OutsideSimulatorApp.GetInstance().ObjectPicker.ClickedNode = CreateObject.ParentNode.Children[CreateObject.ChildName];
+            }
+        }
+
+        public void FinalizePlaceAction()
+        {
+            if (IsPlacing)
+            {
+                PlaceObject();
+            }
+        }
+        #endregion
+
         #region Listener Implementations
         public void OnKeyPress(KeyEventArgs e)
         {
             if (e.Control && e.KeyCode == Keys.N)
             {
                 // New Object if not placing, otherwise cycle through renderable types
-                if (IsPlacing)
-                {
-                    PlacingID++;
-                    PlacingID %= RenderableList.Count;
-
-                    IRenderable CreatedRenderable;
-                    CreatedRenderable = System.Activator.CreateInstance(RenderableList[PlacingID]) as IRenderable;
-                    CreateObject.Undo();
-                    OutsideSimulatorApp.GetInstance().ObjectPicker.ClickedNode = LastPickedObject;
-                    Cameras.Camera SceneCamera = OutsideSimulatorApp.GetInstance().SceneCamera;
-                    Vector3 lav = (SceneCamera.LookAt - SceneCamera.Position);
-                    lav.Normalize();
-                    CreateObject = new Commands.CreateObject(
-                        CreatedRenderable,
-                        Matrix.Translation(SceneCamera.Position
-                        + lav * frontDist));
-                    CreateObject.Redo();
-                    OutsideSimulatorApp.GetInstance().ObjectPicker.ClickedNode = CreateObject.ParentNode.Children[CreateObject.ChildName];
-                }
-                else
-                {
-                    IsPlacing = true;
-                    PlacingID = 0;
-
-                    IRenderable CreatedRenderable;
-                    CreatedRenderable = System.Activator.CreateInstance(RenderableList[PlacingID]) as IRenderable;
-                    Cameras.Camera SceneCamera = OutsideSimulatorApp.GetInstance().SceneCamera;
-                    Vector3 lav = (SceneCamera.LookAt - SceneCamera.Position);
-                    lav.Normalize();
-                    LastPickedObject = OutsideSimulatorApp.GetInstance().ObjectPicker.ClickedNode;
-                    CreateObject = new Commands.CreateObject(
-                        CreatedRenderable,
-                        Matrix.Translation(SceneCamera.Position
-                        + lav * frontDist));
-                    CreateObject.Redo();
-                    OutsideSimulatorApp.GetInstance().ObjectPicker.ClickedNode = CreateObject.ParentNode.Children[CreateObject.ChildName];
-                }
+                NewPlaceAction();
             }
             else if (e.KeyCode == Keys.Enter)
             {
-                if (IsPlacing)
-                {
-                    PlaceObject();
-                }
+                FinalizePlaceAction();
             }
         }
 
@@ -89,7 +101,7 @@ namespace OutsideSimulator.Scene.UserInteractions
         {
             if (IsPlacing && e.Button == MouseButtons.Left)
             {
-                PlaceObject();
+                FinalizePlaceAction();
             }
         }
 

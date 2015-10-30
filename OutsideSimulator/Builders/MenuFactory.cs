@@ -21,6 +21,7 @@ namespace OutsideSimulator.Builders
                 // Create a new simulation
                 OutsideSimulatorApp.GetInstance().CreateNewScene();
             });
+
             MainMenu.AddAction("../../assets/MenuButtons/ExitButton.dds", () => { OutsideSimulatorApp.GetInstance().Close(); });
 
             return MainMenu;
