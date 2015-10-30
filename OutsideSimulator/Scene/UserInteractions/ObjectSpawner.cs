@@ -16,7 +16,8 @@ namespace OutsideSimulator.Scene.UserInteractions
     {
         public static readonly List<Type> RenderableList = new List<Type>(new Type[]
         {
-            typeof(TestRenderable)
+            typeof(TestRenderable),
+            typeof(TerrainRenderable)
         });
 
         protected static float frontDist = 15.0f;

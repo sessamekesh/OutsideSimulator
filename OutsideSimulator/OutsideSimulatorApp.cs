@@ -138,7 +138,7 @@ namespace OutsideSimulator
         /// </summary>
         public void LoadScene()
         {
-            var loadDialog = new SaveFileDialog();
+            var loadDialog = new OpenFileDialog();
             loadDialog.Filter = "Outside Simulator Scene (*.oss)|*.oss";
 
             var dr = loadDialog.ShowDialog();

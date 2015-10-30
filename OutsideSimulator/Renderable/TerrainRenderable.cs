@@ -26,6 +26,15 @@ namespace OutsideSimulator.Renderable
         #endregion
 
         #region Ctor and IRenderable
+        public TerrainRenderable()
+        {
+            Width = 100.0f;
+            Depth = 100.0f;
+            XSubdivisions = 5;
+            ZSubdivisions = 5;
+            GeometryGenerator.CreateGrid(Width, Depth, XSubdivisions, ZSubdivisions, out Vertices, out Indices);
+        }
+
         public TerrainRenderable(float width, float depth, uint xsubs, uint zsubs)
         {
             Width = width;
