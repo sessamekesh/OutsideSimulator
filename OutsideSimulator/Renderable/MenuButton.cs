@@ -12,10 +12,16 @@ namespace OutsideSimulator.Renderable
 {
     public class MenuButton : IRenderable
     {
+        public static readonly Color4 RegularButtonColor = new Color4(1.0f, 1.0f, 1.0f, 1.0f);
+        public static readonly Color4 HoverButtonColor = new Color4(0.5f, 1.0f, 1.0f, 1.0f);
+        public static readonly Color4 DisabledButtonColor = new Color4(0.2f, 0.2f, 0.2f, 1.0f);
+        public static readonly Color4 PressedButtonColor = new Color4(0.5f, 1.0f, 0.5f, 1.0f);
+
         #region Properties
         public string TextureLocation { get; private set; }
         public bool IsMouseOver { get; set; }
         public bool IsMouseDown { get; set; }
+        public bool IsEnabled { get; set; }
 
         public Vector2 UpperLeft { get; private set; }
         public Vector2 LowerRight { get; private set; }
@@ -26,6 +32,7 @@ namespace OutsideSimulator.Renderable
             this.TextureLocation = TextureLocation;
             IsMouseDown = false;
             IsMouseDown = false;
+            IsEnabled = true;
             UpperLeft = upperLeft;
             LowerRight = lowerRight;
         }
@@ -42,6 +49,30 @@ namespace OutsideSimulator.Renderable
                         2, 3, 0
                     };
                 default: throw new CannotResolveIndicesException(EffectName, RenderableName);
+            }
+        }
+
+        /// <summary>
+        /// Gets the color associated with this button (chanes if hovered, clicked, disabled)
+        /// </summary>
+        /// <returns></returns>
+        public Color4 GetBlendColor()
+        {
+            if (!IsEnabled)
+            {
+                return DisabledButtonColor;
+            }
+            else if (IsMouseDown)
+            {
+                return PressedButtonColor;
+            }
+            else if (IsMouseOver)
+            {
+                return HoverButtonColor;
+            }
+            else
+            {
+                return RegularButtonColor;
             }
         }
 

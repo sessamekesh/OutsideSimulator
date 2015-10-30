@@ -27,6 +27,10 @@ namespace OutsideSimulator.Effects.MenuEffect
         #region LogicVariables
         #endregion
 
+        #region Render States
+        protected DepthStencilState DepthDisabledState;
+        #endregion
+
         #region Shader Variables
         protected EffectVectorVariable CPO_BlendColor;
         protected EffectResourceVariable SRV_DiffuseMap;
@@ -76,11 +80,37 @@ namespace OutsideSimulator.Effects.MenuEffect
             InputLayout = new InputLayout(Device, Technique.GetPassByIndex(0).Description.Signature, vertexDesc);
 
             Util.ReleaseCom(ref compiledShader);
+
+            DepthStencilStateDescription dssd = new DepthStencilStateDescription()
+            {
+                IsDepthEnabled = false,
+                DepthWriteMask = DepthWriteMask.All,
+                DepthComparison = Comparison.Less,
+                IsStencilEnabled = true,
+                StencilReadMask = 0xFF,
+                StencilWriteMask = 0xFF,
+                FrontFace = new DepthStencilOperationDescription()
+                {
+                    FailOperation = StencilOperation.Keep,
+                    PassOperation = StencilOperation.Keep,
+                    DepthFailOperation = StencilOperation.Increment,
+                    Comparison = Comparison.Always
+                },
+                BackFace = new DepthStencilOperationDescription()
+                {
+                    FailOperation = StencilOperation.Keep,
+                    PassOperation = StencilOperation.Keep,
+                    Comparison = Comparison.Always,
+                    DepthFailOperation = StencilOperation.Decrement
+                }
+            };
+            DepthDisabledState = DepthStencilState.FromDescription(Device, dssd);
         }
 
         #region RenderEffect
         public void Dispose()
         {
+            Util.ReleaseCom(ref DepthDisabledState);
             Util.ReleaseCom(ref VertexBuffer);
             Util.ReleaseCom(ref IndexBuffer);
             Util.ReleaseCom(ref InputLayout);
@@ -144,7 +174,12 @@ namespace OutsideSimulator.Effects.MenuEffect
             Pass = Technique.GetPassByIndex(0);
             CPO_BlendColor.Set(new Vector4(1.0f, 1.0f, 1.0f, 0.8f)); // 80% opacity
 
-            // TODO: Enable blending for a transparent background...
+            //
+            // Set depth stencil state
+            //
+            var existingState = ImmediateContext.OutputMerger.DepthStencilState;
+            ImmediateContext.OutputMerger.DepthStencilState = DepthDisabledState;
+
             //
             // Render background...
             //
@@ -157,10 +192,16 @@ namespace OutsideSimulator.Effects.MenuEffect
             //
             for (var i = 0; i < menuButtons.Length; i++)
             {
+                CPO_BlendColor.Set(menuButtons[i].GetBlendColor());
                 SRV_DiffuseMap.SetResource(TextureManager.GetInstance().GetResource(Device, menuButtons[i].GetTexturePath()));
                 Pass.Apply(ImmediateContext);
                 ImmediateContext.DrawIndexed(6, sets[i + 1].Item2, sets[i + 1].Item1);
             }
+
+            //
+            // Restore depth stencil state
+            //
+            ImmediateContext.OutputMerger.DepthStencilState = existingState;
         }
         #endregion
     }
