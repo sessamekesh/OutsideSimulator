@@ -14,7 +14,7 @@ namespace OutsideSimulator.Scene.UserInteractions
     /// Class that handles picking of objects via user clicking
     ///  Picks an object if and only if the mouse was pressed and released on that object.
     /// </summary>
-    public class ObjectPicker : MouseDownSubscriber, MouseUpSubscriber
+    public class ObjectPicker : MouseDownSubscriber, MouseUpSubscriber, KeyUpSubscriber
     {
         #region Logical Members
         public SceneGraph ClickedNode { get; set; }
@@ -43,6 +43,15 @@ namespace OutsideSimulator.Scene.UserInteractions
                 {
                     // The clicked node is the selected node!
                 }
+        }
+
+        public void OnKeyUp(KeyEventArgs e)
+        {
+            if (e.Control == false && e.Shift == false && e.Alt == false && e.KeyCode == Keys.Delete)
+            {
+                // TODO KAM: Need to have a better delete whatever
+                OutsideSimulatorApp.GetInstance().SceneRootNode.RemoveDescendent(ClickedNode);
+            }
         }
     }
 }

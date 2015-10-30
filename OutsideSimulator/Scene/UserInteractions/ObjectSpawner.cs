@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using SlimDX;
 
 using OutsideSimulator.Commands.Events;
+using OutsideSimulator.Commands.Undoables;
 using OutsideSimulator.Renderable;
 
 namespace OutsideSimulator.Scene.UserInteractions
@@ -28,7 +29,7 @@ namespace OutsideSimulator.Scene.UserInteractions
         #endregion
 
         #region Logical Members
-        public Commands.CreateObject CreateObject { get; protected set; }
+        public CreateObject CreateObject { get; protected set; }
         public SceneGraph LastPickedObject { get; protected set; }
         #endregion
 
@@ -47,7 +48,7 @@ namespace OutsideSimulator.Scene.UserInteractions
                 Cameras.Camera SceneCamera = OutsideSimulatorApp.GetInstance().SceneCamera;
                 Vector3 lav = (SceneCamera.LookAt - SceneCamera.Position);
                 lav.Normalize();
-                CreateObject = new Commands.CreateObject(
+                CreateObject = new CreateObject(
                     CreatedRenderable,
                     Matrix.Translation(SceneCamera.Position
                     + lav * frontDist));
@@ -65,7 +66,7 @@ namespace OutsideSimulator.Scene.UserInteractions
                 Vector3 lav = (SceneCamera.LookAt - SceneCamera.Position);
                 lav.Normalize();
                 LastPickedObject = OutsideSimulatorApp.GetInstance().ObjectPicker.ClickedNode;
-                CreateObject = new Commands.CreateObject(
+                CreateObject = new CreateObject(
                     CreatedRenderable,
                     Matrix.Translation(SceneCamera.Position
                     + lav * frontDist));

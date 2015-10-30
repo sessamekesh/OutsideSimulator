@@ -56,7 +56,7 @@
   <ItemGroup>
     <Compile Include="Commands\CommandStack.cs" />
     <Compile Include="Commands\CreateNewDefaultScene.cs" />
-    <Compile Include="Commands\CreateObject.cs" />
+    <Compile Include="Commands\Undoables\CreateObject.cs" />
     <Compile Include="Commands\Events\MouseWheelSubscriber.cs" />
     <Compile Include="Commands\Events\KeyDownSubscriber.cs" />
     <Compile Include="Commands\Events\KeyUpSubscriber.cs" />
@@ -68,6 +68,7 @@
     <Compile Include="Commands\IUndo.cs" />
     <Compile Include="Builders\MenuFactory.cs" />
     <Compile Include="Commands\OutsideFileGenerator.cs" />
+    <Compile Include="Commands\Undoables\DeleteObject.cs" />
     <Compile Include="Commands\UndoSerializer.cs" />
     <Compile Include="D3DCore\Dirtyable.cs" />
     <Compile Include="D3DCore\GeometryGenerator.cs" />

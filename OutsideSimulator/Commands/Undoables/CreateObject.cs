@@ -9,7 +9,7 @@ using OutsideSimulator.Renderable;
 
 using SlimDX;
 
-namespace OutsideSimulator.Commands
+namespace OutsideSimulator.Commands.Undoables
 {
     public class CreateObject : IUndo
     {

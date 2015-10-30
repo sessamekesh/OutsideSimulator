@@ -8,6 +8,8 @@ using SlimDX;
 
 using OutsideSimulator.D3DCore;
 
+using OutsideSimulator.Commands.Undoables;
+
 using System.Xml.Linq;
 
 namespace OutsideSimulator.Commands

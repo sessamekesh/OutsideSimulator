@@ -160,6 +160,21 @@ namespace OutsideSimulator.Scene
             Child.Parent = this;
         }
 
+        public void RemoveDescendent(SceneGraph ToRemove)
+        {
+            if (Children.ContainsValue(ToRemove))
+            {
+                Children.Remove(Children.First((x) => x.Value == ToRemove).Key);
+            }
+            else
+            {
+                foreach (var Child in Children)
+                {
+                    Child.Value.RemoveDescendent(ToRemove);
+                }
+            }
+        }
+
         public static SceneGraph Deserialize(string XMLString)
         {
             // TODO KAM: Complete the deserialize here (and also in your actions, camera...)
