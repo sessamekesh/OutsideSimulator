@@ -62,6 +62,12 @@ namespace OutsideSimulator.Scene.Cameras
         #region Subscriptions
         public void OnKeyPress(KeyEventArgs e)
         {
+            // Ignore if CTRL is pressed
+            if (e.Control)
+            {
+                return;
+            }
+
             switch (e.KeyCode)
             {
                 case Keys.W:

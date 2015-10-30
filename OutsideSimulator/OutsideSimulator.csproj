@@ -68,6 +68,7 @@
     <Compile Include="Commands\IUndo.cs" />
     <Compile Include="Builders\MenuFactory.cs" />
     <Compile Include="Commands\OutsideFileGenerator.cs" />
+    <Compile Include="Commands\UndoSerializer.cs" />
     <Compile Include="D3DCore\Dirtyable.cs" />
     <Compile Include="D3DCore\GeometryGenerator.cs" />
     <Compile Include="D3DCore\MathF.cs" />

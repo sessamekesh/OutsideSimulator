@@ -16,8 +16,8 @@ namespace OutsideSimulator.Commands
         #region Logical Members
         public SceneGraph ParentNode { get; protected set; }
         public string ChildName { get; protected set; }
-        protected IRenderable Renderable;
-        protected Matrix Transform;
+        public IRenderable Renderable { get; protected set; }
+        public Matrix Transform { get; protected set; }
 
         protected bool IsPerformed;
         #endregion
@@ -27,11 +27,11 @@ namespace OutsideSimulator.Commands
         /// </summary>
         /// <param name="parent">The parent scene node to which to attach the object</param>
         /// <param name="renderable">The renderable to provide to the node</param>
-        public CreateObject(SceneGraph parent, IRenderable renderable, Matrix transform)
+        public CreateObject(IRenderable renderable, Matrix transform)
         {
             IsPerformed = false;
-            ParentNode = parent;
-            ChildName = (parent.GetHashCode() + DateTime.Now.GetHashCode()).ToString();
+            ParentNode = OutsideSimulatorApp.GetInstance().SceneRootNode; ;
+            ChildName = (ParentNode.GetHashCode() + DateTime.Now.GetHashCode()).ToString();
             Renderable = renderable;
             Transform = transform;
         }

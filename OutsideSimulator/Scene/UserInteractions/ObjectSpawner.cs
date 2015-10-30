@@ -49,7 +49,7 @@ namespace OutsideSimulator.Scene.UserInteractions
                     Cameras.Camera SceneCamera = OutsideSimulatorApp.GetInstance().SceneCamera;
                     Vector3 lav = (SceneCamera.LookAt - SceneCamera.Position);
                     lav.Normalize();
-                    CreateObject = new Commands.CreateObject(OutsideSimulatorApp.GetInstance().ObjectPicker.ClickedNode ?? OutsideSimulatorApp.GetInstance().SceneRootNode,
+                    CreateObject = new Commands.CreateObject(
                         CreatedRenderable,
                         Matrix.Translation(SceneCamera.Position
                         + lav * frontDist));
@@ -67,7 +67,7 @@ namespace OutsideSimulator.Scene.UserInteractions
                     Vector3 lav = (SceneCamera.LookAt - SceneCamera.Position);
                     lav.Normalize();
                     LastPickedObject = OutsideSimulatorApp.GetInstance().ObjectPicker.ClickedNode;
-                    CreateObject = new Commands.CreateObject(OutsideSimulatorApp.GetInstance().ObjectPicker.ClickedNode ?? OutsideSimulatorApp.GetInstance().SceneRootNode,
+                    CreateObject = new Commands.CreateObject(
                         CreatedRenderable,
                         Matrix.Translation(SceneCamera.Position
                         + lav * frontDist));
@@ -115,9 +115,9 @@ namespace OutsideSimulator.Scene.UserInteractions
             OutsideSimulatorApp.GetInstance().CommandStack.Push(CreateObject);
             IsPlacing = false;
 
-            OutsideSimulatorApp.GetInstance().ObjectPicker.ClickedNode = null;
             // Place new object (undo-able action) in our scene,
             //  at its current location (15 units in front of camera, axis-aligned to world)
+            OutsideSimulatorApp.GetInstance().ObjectPicker.ClickedNode = null;
         }
     }
 }

@@ -163,10 +163,35 @@ namespace OutsideSimulator.Scene
         public static SceneGraph Deserialize(string XMLString)
         {
             // TODO KAM: Complete the deserialize here (and also in your actions, camera...)
-            return null;
+            XElement xe = XElement.Parse(XMLString);
+
+            if (xe.Name != "SceneGraph")
+            {
+                return null;
+            }
+            else
+            {
+                Vector3 translation = Util.DeserializeVector((xe.Nodes().First((x) => (x as XElement).Name == "Translation") as XElement).FirstNode.ToString());
+                Quaternion rotation = Util.DeserializeQuaternion((xe.Nodes().First((x) => (x as XElement).Name == "Rotation") as XElement).FirstNode.ToString());
+                Vector3 scale = Util.DeserializeVector((xe.Nodes().First((x) => (x as XElement).Name == "Scaling") as XElement).FirstNode.ToString());
+                IRenderable child = RenderableFactory.Deserialize((xe.Nodes().First((x) => (x as XElement).Name == "Renderable") as XElement).FirstNode.ToString());
+
+                var tr = new SceneGraph(Matrix.Transformation(Vector3.Zero, Quaternion.Identity, scale, Vector3.Zero, rotation, translation), child);
+
+                // Do all children...
+                foreach (var xchild in (xe.Nodes().Where((x) => (x as XElement).Name == "Child")))
+                {
+                    tr.AttachChild(
+                        ((xchild as XElement).Nodes().First((x) => (x as XElement).Name == "Name") as XElement).Value,
+                        SceneGraph.Deserialize(((xchild as XElement).Nodes().First((x) => (x as XElement).Name == "SceneGraph") as XElement).ToString())
+                    );
+                }
+
+                return tr;
+            }
         }
 
-        public static string Serialize(SceneGraph SceneGraph)
+        public static XElement Serialize(SceneGraph SceneGraph)
         {
             var tr = new XElement("SceneGraph",
                 new XElement("Translation", Util.SerializeVector(SceneGraph.Translation)),
@@ -183,7 +208,7 @@ namespace OutsideSimulator.Scene
                 ));
             }
 
-            return tr.ToString();
+            return tr;
         }
     }
 }

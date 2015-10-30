@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Linq;
 
 using SlimDX.Direct3D11;
 using System.Windows.Forms;
@@ -100,6 +102,75 @@ namespace OutsideSimulator
         }
         #endregion
 
+        #region Logic
+        /// <summary>
+        ///  Save the scene to a file
+        /// </summary>
+        public void SaveScene()
+        {
+            var saveDialog = new SaveFileDialog();
+            saveDialog.Filter = "Outside Simulator Scene (*.oss)|*.oss";
+            var dr = saveDialog.ShowDialog();
+            if (dr != DialogResult.OK)
+            {
+                MessageBox.Show("SaveScene aborted", "Outside Simulator");
+                return;
+            }
+
+            var xe = new XElement("OutsideSimulatorScene",
+                new XElement("Version", 1.0f),
+                new XElement("SceneGraph", SceneGraph.Serialize(SceneRootNode)),
+                new XElement("CommandStack", CommandStack.Serialize())
+            );
+
+            var sw = new System.IO.StreamWriter(saveDialog.FileName);
+
+            foreach (string line in xe.ToString().Split('\n'))
+            {
+                sw.WriteLine(line.Trim('\n').Trim('\r'));
+            }
+
+            sw.Close();
+        }
+
+        /// <summary>
+        ///  Load the scene from a file
+        /// </summary>
+        public void LoadScene()
+        {
+            var loadDialog = new SaveFileDialog();
+            loadDialog.Filter = "Outside Simulator Scene (*.oss)|*.oss";
+
+            var dr = loadDialog.ShowDialog();
+            if (dr != DialogResult.OK)
+            {
+                MessageBox.Show("LoadScene aborted", "Outside Simulator");
+                return;
+            }
+
+            var sr = new System.IO.StreamReader(loadDialog.FileName);
+
+            var xe = XElement.Parse(sr.ReadToEnd());
+
+            if (xe.Name != "OutsideSimulatorScene")
+            {
+                MessageBox.Show("LoadScene failed - file is not a valid OutsideSimulatorScene", "Outside Simulator");
+                return;
+            }
+            
+            var sg = SceneGraph.Deserialize(
+                (xe.Nodes().First((x) => (x as XElement).Name == "SceneGraph") as XElement).Nodes().First((x) => (x as XElement).Name == "SceneGraph").ToString()
+            );
+            var cs = CommandStack.Deserialize(
+                (xe.Nodes().First((x) => (x as XElement).Name == "CommandStack") as XElement).Nodes().First((x) => (x as XElement).Name == "CommandStack").ToString()
+            );
+
+            SceneGraph.Children.Remove("Scene");
+            SceneGraph.AttachChild("Scene", sg);
+            CommandStack = cs;
+        }
+        #endregion
+
         #region Action Overrides
         protected override void OnResize(EventArgs e)
         {
@@ -115,9 +186,20 @@ namespace OutsideSimulator
         {
             base.OnKeyDown(e);
 
-            foreach (var KDS in KeyDownSubscribers)
+            if (e.Control && e.KeyCode == Keys.S)
             {
-                KDS.OnKeyPress(e);
+                SaveScene();
+            }
+            else if (e.Control && e.KeyCode == Keys.O)
+            {
+                LoadScene();
+            }
+            else
+            {
+                foreach (var KDS in KeyDownSubscribers)
+                {
+                    KDS.OnKeyPress(e);
+                }
             }
         }
 

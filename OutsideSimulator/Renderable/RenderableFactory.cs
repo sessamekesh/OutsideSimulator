@@ -20,11 +20,11 @@ namespace OutsideSimulator.Renderable
         /// </summary>
         /// <param name="toSave">The renderable to save</param>
         /// <returns>An XML string (self-contained)</returns>
-        public static string Serialize(IRenderable toSave)
+        public static XElement Serialize(IRenderable toSave)
         {
             if (toSave == null)
             {
-                return "";
+                return null;
             }
             else if (toSave is TerrainRenderable)
             {
@@ -35,13 +35,13 @@ namespace OutsideSimulator.Renderable
                     new XElement("xSubdivisions", tr.XSubdivisions),
                     new XElement("zSubdivisions", tr.ZSubdivisions));
 
-                return ts.ToString();
+                return ts;
             }
             else if (toSave is TestRenderable)
             {
                 TestRenderable tr = toSave as TestRenderable;
                 XElement ts = new XElement("TestRenderable", "");
-                return ts.ToString();
+                return ts;
             }
             else
             {
