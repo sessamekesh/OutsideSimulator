@@ -5,6 +5,8 @@ using System.Windows.Forms;
 using OutsideSimulator.Commands.Events;
 using OutsideSimulator.Renderable;
 
+using SlimDX;
+
 namespace OutsideSimulator.Scene
 {
     public struct Submenu
@@ -202,21 +204,91 @@ namespace OutsideSimulator.Scene
         /// </summary>
         /// <param name="e"></param>
         public void OnMouseDown(MouseEventArgs e)
-        { }
+        {
+            if (ActiveMenu == null) return;
+
+            if (e.Button == MouseButtons.Left)
+            {
+                Vector2 viewSpacePixel = new Vector2(
+                    (2.0f * e.X / OutsideSimulatorApp.GetInstance().Width - 1.0f),
+                    (-2.0f * e.Y / OutsideSimulatorApp.GetInstance().Height + 1.0f));
+                foreach (var Button in MenuButtons)
+                {
+                    if (Button.UpperLeft.X < viewSpacePixel.X && Button.LowerRight.X > viewSpacePixel.X
+                        && Button.LowerRight.Y < viewSpacePixel.Y && Button.UpperLeft.Y > viewSpacePixel.Y)
+                    {
+                        Button.IsMouseDown = true;
+                    }
+                    else
+                    {
+                        Button.IsMouseDown = false;
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// Notify the proper button that it is being mouseovered
         /// </summary>
         /// <param name="e"></param>
         public void OnMouseMove(MouseEventArgs e)
-        { }
+        {
+            if (ActiveMenu == null) return;
+
+            Vector2 viewSpacePixel = new Vector2(
+                    (2.0f * e.X / OutsideSimulatorApp.GetInstance().Width - 1.0f),
+                    (-2.0f * e.Y / OutsideSimulatorApp.GetInstance().Height + 1.0f));
+            foreach (var Button in MenuButtons)
+            {
+                if (Button.UpperLeft.X < viewSpacePixel.X && Button.LowerRight.X > viewSpacePixel.X
+                    && Button.LowerRight.Y < viewSpacePixel.Y && Button.UpperLeft.Y > viewSpacePixel.Y)
+                {
+                    Button.IsMouseOver = true;
+                }
+                else
+                {
+                    Button.IsMouseOver = false;
+                }
+            }
+        }
 
         /// <summary>
         /// Invoke a button press, if the mouse was over a button both when pressed and released
         /// </summary>
         /// <param name="e"></param>
         public void OnMouseUp(MouseEventArgs e)
-        { }
+        {
+            if (ActiveMenu == null) return;
+
+            if (e.Button == MouseButtons.Left)
+            {
+                Vector2 viewSpacePixel = new Vector2(
+                    (2.0f * e.X / OutsideSimulatorApp.GetInstance().Width - 1.0f),
+                    (-2.0f * e.Y / OutsideSimulatorApp.GetInstance().Height + 1.0f));
+                foreach (var Button in MenuButtons)
+                {
+                    if (Button.UpperLeft.X < viewSpacePixel.X && Button.LowerRight.X > viewSpacePixel.X
+                        && Button.LowerRight.Y < viewSpacePixel.Y && Button.UpperLeft.Y > viewSpacePixel.Y
+                        && Button.IsMouseDown)
+                    {
+                        // Invoke action!
+                        if (Submenus.Count((x) => x.Button == Button) > 0)
+                        {
+                            ActiveMenu = Submenus.First((x) => x.Button == Button).Menu;
+                        }
+                        else if (Actions.Count((x) => x.Button == Button) > 0)
+                        {
+                            Actions.First((x) => x.Button == Button).Action.Invoke();
+                        }
+                        else
+                        {
+                            throw new Exception("Um... Action not recognized?");
+                        }
+                    }
+                    Button.IsMouseDown = false;
+                }
+            }
+        }
 
         public string GetTexturePath()
         {

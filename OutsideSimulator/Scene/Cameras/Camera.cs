@@ -38,7 +38,7 @@ namespace OutsideSimulator.Scene.Cameras
             {
                 return _lookat;
             }
-            protected set
+            set
             {
                 _lookat = value;
                 ViewMatrix.DoTheNasty();

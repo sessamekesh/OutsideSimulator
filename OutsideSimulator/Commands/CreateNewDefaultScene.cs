@@ -40,7 +40,7 @@ namespace OutsideSimulator.Commands
 
                 // Attach test object
                 var CubeThing = new SceneGraph(
-                    SlimDX.Matrix.Transformation(SlimDX.Vector3.Zero, SlimDX.Quaternion.Identity, new SlimDX.Vector3(1.0f, 1.0f, 1.0f), SlimDX.Vector3.Zero, SlimDX.Quaternion.Identity, new SlimDX.Vector3(0.0f, 5.0f, -20.0f))
+                    SlimDX.Matrix.Transformation(SlimDX.Vector3.Zero, SlimDX.Quaternion.Identity, new SlimDX.Vector3(1.0f, 1.0f, 1.0f), SlimDX.Vector3.Zero, SlimDX.Quaternion.Identity, new SlimDX.Vector3(38.0f, 1.0f, 1.0f))
                 );
                 CubeThing.Renderable = new TestRenderable();
 

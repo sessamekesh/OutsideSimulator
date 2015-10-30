@@ -13,9 +13,9 @@ namespace OutsideSimulator.Renderable
     public class MenuButton : IRenderable
     {
         public static readonly Color4 RegularButtonColor = new Color4(1.0f, 1.0f, 1.0f, 1.0f);
-        public static readonly Color4 HoverButtonColor = new Color4(0.5f, 1.0f, 1.0f, 1.0f);
-        public static readonly Color4 DisabledButtonColor = new Color4(0.2f, 0.2f, 0.2f, 1.0f);
-        public static readonly Color4 PressedButtonColor = new Color4(0.5f, 1.0f, 0.5f, 1.0f);
+        public static readonly Color4 HoverButtonColor = new Color4(1.0f, 0.5f, 1.0f, 1.0f);
+        public static readonly Color4 DisabledButtonColor = new Color4(1.0f, 0.2f, 0.2f, 0.2f);
+        public static readonly Color4 PressedButtonColor = new Color4(1.0f, 0.5f, 0.5f, 1.0f);
 
         #region Properties
         public string TextureLocation { get; private set; }

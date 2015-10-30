@@ -98,10 +98,6 @@ namespace OutsideSimulator.Scene.Cameras
                     else
                         _rightSpeed = 1.0f;
                     break;
-                case Keys.B:
-                    Console.WriteLine("Camera Position: " + Position.X + ", " + Position.Y + ", " + Position.Z);
-                    Console.WriteLine("Camera LookAt: " + LookAt.X + ", " + LookAt.Y + ", " + LookAt.Z);
-                    break;
                 case Keys.ShiftKey:
                     _isShiftDown = true;
                     break;

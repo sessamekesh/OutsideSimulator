@@ -17,9 +17,6 @@ namespace OutsideSimulator.D3DCore
         {
             // Convert screen pixel to view space
             Vector2 viewSpacePixel = new Vector2((2.0f * ClickPoint.X / ScreenDims.X - 1.0f) / ProjMatrix.M11, (-2.0f * ClickPoint.Y / ScreenDims.Y + 1.0f) / ProjMatrix.M22);
-            Console.WriteLine("ScreenDim: " + ScreenDims.ToString());
-            Console.WriteLine("ClickPoint: " + ClickPoint.ToString());
-            Console.WriteLine("ViewSpace: " + viewSpacePixel.ToString());
             Ray viewRay = new Ray(new Vector3(), new Vector3(viewSpacePixel.X, viewSpacePixel.Y, 1.0f));
 
             // View Ray is now the thing we will use...

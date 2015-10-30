@@ -169,6 +169,26 @@ namespace OutsideSimulator
             SceneGraph.AttachChild("Scene", sg);
             CommandStack = cs;
         }
+
+        /// <summary>
+        /// Creates the default scene
+        /// </summary>
+        public void CreateNewScene()
+        {
+            //
+            // Create Startup Scene
+            //
+            SceneGraph = new SceneGraph(SlimDX.Matrix.Identity);
+            SceneGraph.AttachChild("Menu", new SceneGraph(SlimDX.Matrix.Identity));
+            SceneGraph.Children["Menu"].Renderable = Builders.MenuFactory.BuildMainMenu();
+
+            Unsubscribe(Camera);
+
+            SceneGraph defaultScene;
+            NewSceneCreator = new CreateNewDefaultScene();
+            NewSceneCreator.CreateNewScene(out Camera, out defaultScene);
+            SceneGraph.AttachChild("Scene", defaultScene);
+        }
         #endregion
 
         #region Action Overrides
@@ -227,9 +247,9 @@ namespace OutsideSimulator
         {
             base.OnMouseUp(e);
 
-            foreach (var MUS in MouseUpSubscribers)
+            for (int i = 0; i < MouseUpSubscribers.Count; i++)
             {
-                MUS.OnMouseUp(e);
+                MouseUpSubscribers[i].OnMouseUp(e);
             }
         }
 
@@ -331,18 +351,8 @@ namespace OutsideSimulator
         {
             base.InitD3D();
 
-            //
-            // Create Startup Scene
-            //
-            SceneGraph = new SceneGraph(SlimDX.Matrix.Identity);
-            SceneGraph.AttachChild("Menu", new SceneGraph(SlimDX.Matrix.Identity));
-            SceneGraph.Children["Menu"].Renderable = Builders.MenuFactory.BuildMainMenu();
-
             // Create default scene
-            SceneGraph defaultScene;
-            NewSceneCreator = new CreateNewDefaultScene();
-            NewSceneCreator.CreateNewScene(out Camera, out defaultScene);
-            SceneGraph.AttachChild("Scene", defaultScene);
+            CreateNewScene();
 
             // Initialize our picker
             ObjectPicker = new ObjectPicker();
