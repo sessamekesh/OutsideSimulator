@@ -4,28 +4,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using SlimDX;
-
-using FileFormatWavefront;
-using FileFormatWavefront.Model;
-
 namespace OutsideSimulator.Renderable
 {
-    public class RockRenderable : FromOBJRenderable
+    public class TreeRenderable : FromOBJRenderable
     {
         public override string GetAssetPath()
         {
-            return "../../assets/Rocks/rock_4.obj";
+            return "../../assets/SimpleTree/SimpleTree.obj";
         }
 
         public override string GetTexturePath()
         {
-            return "../../assets/Rocks/rock_4_col.png";
+            return "../../assets/SimpleTree/Combined.png";
         }
 
         public override string RenderableName()
         {
-            return "RockRenderable";
+            return "SimpleTree";
         }
     }
 }

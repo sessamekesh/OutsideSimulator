@@ -19,5 +19,20 @@ namespace OutsideSimulator.Renderable
         {
             return "../../assets/Rocks/rock_5.obj";
         }
+
+        public override object[] GetVertexList(string EffectName)
+        {
+            return BaseRenderable.GetVertexList(EffectName);
+        }
+
+        public override uint[] GetIndexList(string EffectName)
+        {
+            return BaseRenderable.GetIndexList(EffectName);
+        }
+
+        public override string GetTexturePath()
+        {
+            return BaseRenderable.GetTexturePath();
+        }
     }
 }

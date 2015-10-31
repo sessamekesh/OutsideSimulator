@@ -36,7 +36,12 @@ namespace OutsideSimulator.Commands
                 IsExecuted = true;
 
                 // Attach default terrain
-                SceneGraph.Renderable = new TerrainRenderable(100.0f, 100.0f, 5, 5);
+                var TerrainThing = new SceneGraph(
+                    SlimDX.Matrix.Transformation(SlimDX.Vector3.Zero, SlimDX.Quaternion.Identity, new SlimDX.Vector3(1.0f, 1.0f, 1.0f), SlimDX.Vector3.Zero, SlimDX.Quaternion.Identity, new SlimDX.Vector3(0.0f, 0.0f, 1.0f))
+                );
+                TerrainThing.Renderable = new TerrainRenderable(100.0f, 100.0f, 5, 5);
+
+                SceneGraph.AttachChild("TerrainThing", TerrainThing);
 
                 // Attach test object
                 var CubeThing = new SceneGraph(

@@ -149,7 +149,7 @@ namespace OutsideSimulator.Effects.MenuEffect
             {
                 vertsList.AddRange(menuButtons[i].GetVertexList(EffectName()));
                 indicesList.AddRange(menuButtons[i].GetIndexList(EffectName()));
-                sets.Add(new Tuple<int, int>(vertsList.Count - sets[sets.Count - 1].Item1, indicesList.Count - sets[sets.Count - 1].Item2));
+                sets.Add(new Tuple<int, int>(vertsList.Count, indicesList.Count));
             }
 
             var vertexBufferDesc = new BufferDescription(MenuEffectVertex.Stride * vertsList.Count,
@@ -195,7 +195,7 @@ namespace OutsideSimulator.Effects.MenuEffect
                 CPO_BlendColor.Set(menuButtons[i].GetBlendColor());
                 SRV_DiffuseMap.SetResource(TextureManager.GetInstance().GetResource(Device, menuButtons[i].GetTexturePath()));
                 Pass.Apply(ImmediateContext);
-                ImmediateContext.DrawIndexed(6, sets[i + 1].Item2, sets[i + 1].Item1);
+                ImmediateContext.DrawIndexed(6, sets[i].Item2, sets[i].Item1);
             }
 
             //

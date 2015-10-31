@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 
+using SlimDX;
 using SlimDX.Direct3D11;
 using System.Windows.Forms;
 
@@ -33,6 +34,8 @@ namespace OutsideSimulator
         protected SceneGraph SceneGraph;
         protected Dirtyable<SlimDX.Matrix> ProjMatrix;
         protected CreateNewDefaultScene NewSceneCreator;
+
+        public Color4 FillColor { get; set; }
         #endregion
 
         #region Logic / Interactions
@@ -293,7 +296,7 @@ namespace OutsideSimulator
         {
             base.DrawScene();
 
-            ImmediateContext.ClearRenderTargetView(RenderTargetView, new SlimDX.Color4(0.5f, 0.5f, 1.0f));
+            ImmediateContext.ClearRenderTargetView(RenderTargetView, FillColor);
             ImmediateContext.ClearDepthStencilView(DepthStencilView, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
 
             // Render the scene...
@@ -350,6 +353,8 @@ namespace OutsideSimulator
         protected override void InitD3D()
         {
             base.InitD3D();
+
+            FillColor = new Color4(0.5f, 0.5f, 0.9f);
 
             // Create default scene
             CreateNewScene();

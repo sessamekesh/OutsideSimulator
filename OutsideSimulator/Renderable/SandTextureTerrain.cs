@@ -6,20 +6,13 @@ using System.Threading.Tasks;
 
 namespace OutsideSimulator.Renderable
 {
-    public class MetalWoodTextureDecorator : TestRenderable
+    public class SandTextureTerrain : TerrainRenderable
     {
-        #region Decorator Pattern
-        protected TestRenderable Base;
-        #endregion
+        protected TerrainRenderable Base;
 
-        public MetalWoodTextureDecorator(TestRenderable BaseRenderable) : base()
+        public SandTextureTerrain(TerrainRenderable baseRenderable) : base()
         {
-            Base = BaseRenderable;
-        }
-
-        public override string GetTexturePath()
-        {
-            return "../../assets/Crates/MetalWood.dds";
+            Base = baseRenderable;
         }
 
         public override uint[] GetIndexList(string EffectName)
@@ -30,6 +23,11 @@ namespace OutsideSimulator.Renderable
         public override object[] GetVertexList(string EffectName)
         {
             return Base.GetVertexList(EffectName);
+        }
+
+        public override string GetTexturePath()
+        {
+            return "../../assets/Terrains/Sand.dds";
         }
     }
 }

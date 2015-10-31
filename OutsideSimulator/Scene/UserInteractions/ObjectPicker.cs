@@ -71,6 +71,8 @@ namespace OutsideSimulator.Scene.UserInteractions
                     // Cycle through generation chain, swap out objects.
                     //
 
+                    if (!(OutsideSimulatorApp.GetInstance().SceneRootNode.Children.Count((x) => x.Value == ClickedNode) > 0)) return;
+
                     var childName = OutsideSimulatorApp.GetInstance().SceneRootNode.Children.First((x) => x.Value == ClickedNode).Key;
                     var nextChain = Renderable.RenderableFactory.GetNextRenderableInModificationChain(ClickedNode.Renderable);
 

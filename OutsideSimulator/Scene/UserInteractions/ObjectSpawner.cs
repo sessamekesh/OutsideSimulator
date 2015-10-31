@@ -19,6 +19,7 @@ namespace OutsideSimulator.Scene.UserInteractions
         {
             typeof(TestRenderable),
             typeof(RockRenderable),
+            typeof(TreeRenderable),
             typeof(TerrainRenderable)
         });
 

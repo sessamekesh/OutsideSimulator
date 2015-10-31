@@ -84,6 +84,28 @@ namespace OutsideSimulator.Renderable
                     return new MetalWoodTextureDecorator(oldRenderable as TestRenderable);
                 }
             }
+            else if (oldRenderable is TreeRenderable)
+            {
+                if (oldRenderable is PalmTreeRenderable)
+                {
+                    return new TreeRenderable();
+                }
+                else
+                {
+                    return new PalmTreeRenderable(oldRenderable as TreeRenderable);
+                }
+            }
+            else if (oldRenderable is TerrainRenderable)
+            {
+                if (oldRenderable is SandTextureTerrain)
+                {
+                    return new TerrainRenderable();
+                }
+                else
+                {
+                    return new SandTextureTerrain(new TerrainRenderable());
+                }
+            }
             else if (oldRenderable is RockRenderable)
             {
                 if (oldRenderable is SharpRockDecorator)

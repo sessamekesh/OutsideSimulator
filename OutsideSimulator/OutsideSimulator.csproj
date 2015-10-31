@@ -98,13 +98,17 @@
     <Compile Include="D3DCore\GameTimer.cs" />
     <Compile Include="Renderable\CannotResolveIndicesException.cs" />
     <Compile Include="Renderable\CannotResolveVerticesException.cs" />
+    <Compile Include="Renderable\FromOBJRenderable.cs" />
     <Compile Include="Renderable\MenuButton.cs" />
     <Compile Include="Renderable\MetalWoodTextureDecorator.cs" />
+    <Compile Include="Renderable\PalmTreeRenderable.cs" />
     <Compile Include="Renderable\RenderableFactory.cs" />
     <Compile Include="Renderable\RockRenderable.cs" />
+    <Compile Include="Renderable\SandTextureTerrain.cs" />
     <Compile Include="Renderable\SharpRockDecorator.cs" />
     <Compile Include="Renderable\TerrainRenderable.cs" />
     <Compile Include="Renderable\TestRenderable.cs" />
+    <Compile Include="Renderable\TreeRenderable.cs" />
     <Compile Include="Scene\Cameras\Camera.cs" />
     <Compile Include="Renderable\IRenderable.cs" />
     <Compile Include="Scene\Cameras\FlightCamera.cs" />

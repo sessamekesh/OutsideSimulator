@@ -44,7 +44,7 @@ namespace OutsideSimulator.D3DCore
 
             var boundingBox = Root.GetBoundingBox();
             float dist;
-            boundingBox = (Ray.Intersects(oVR2, boundingBox.Value, out dist)) ? boundingBox : null;
+            if (boundingBox != null) boundingBox = (Ray.Intersects(oVR2, boundingBox.Value, out dist)) ? boundingBox : null;
             var element = (boundingBox == null) ? null : Root;
 
             // (2) Find all children picked
@@ -64,6 +64,7 @@ namespace OutsideSimulator.D3DCore
                 if (boundingBox == null)
                 {
                     boundingBox = childbox;
+                    element = childret;
                 }
                 else if (childbox != null)
                 {

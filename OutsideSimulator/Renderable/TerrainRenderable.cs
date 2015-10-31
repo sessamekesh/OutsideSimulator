@@ -44,7 +44,7 @@ namespace OutsideSimulator.Renderable
             GeometryGenerator.CreateGrid(width, depth, xsubs, zsubs, out Vertices, out Indices);
         }
 
-        public uint[] GetIndexList(string EffectName)
+        public virtual uint[] GetIndexList(string EffectName)
         {
             switch (EffectName)
             {
@@ -56,7 +56,7 @@ namespace OutsideSimulator.Renderable
             }
         }
 
-        public object[] GetVertexList(string EffectName)
+        public virtual object[] GetVertexList(string EffectName)
         {
             switch (EffectName)
             {
@@ -83,9 +83,9 @@ namespace OutsideSimulator.Renderable
             }
         }
 
-        public string GetTexturePath()
+        public virtual string GetTexturePath()
         {
-            return "../../assets/Terrains/Sand.dds";
+            return "../../assets/Terrains/soil.dds";
         }
         #endregion
 
