@@ -30,7 +30,7 @@ namespace OutsideSimulator.Commands.Undoables
         public CreateObject(IRenderable renderable, Matrix transform)
         {
             IsPerformed = false;
-            ParentNode = OutsideSimulatorApp.GetInstance().SceneRootNode; ;
+            ParentNode = OutsideSimulatorApp.GetInstance().SceneRootNode;
             ChildName = (ParentNode.GetHashCode() + DateTime.Now.GetHashCode()).ToString();
             Renderable = renderable;
             Transform = transform;

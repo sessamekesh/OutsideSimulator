@@ -49,8 +49,13 @@ namespace OutsideSimulator.Scene.UserInteractions
         {
             if (e.Control == false && e.Shift == false && e.Alt == false && e.KeyCode == Keys.Delete)
             {
-                // TODO KAM: Need to have a better delete whatever
-                OutsideSimulatorApp.GetInstance().SceneRootNode.RemoveDescendent(ClickedNode);
+                // Get name of descendant
+                var childName = OutsideSimulatorApp.GetInstance().SceneRootNode.Children.First((x) => x.Value == ClickedNode).Key;
+
+                var removeAction = new Commands.Undoables.DeleteObject(childName);
+                removeAction.Redo();
+
+                OutsideSimulatorApp.GetInstance().CommandStack.Push(removeAction);
             }
         }
     }
