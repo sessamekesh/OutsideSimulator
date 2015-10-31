@@ -89,6 +89,11 @@ namespace OutsideSimulator.Scene
             OutsideSimulatorApp.GetInstance().Subscribe(this);
         }
 
+        public void ClearMenu()
+        {
+            ActiveMenu = null;
+        }
+
         public void AddSubmenu(string MenuButtonTexturePath, Menu Submenu)
         {
             Submenus.Add(new Submenu(

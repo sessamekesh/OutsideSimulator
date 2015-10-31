@@ -22,10 +22,10 @@ namespace OutsideSimulator.Commands.Undoables
         /// 
         /// </summary>
         /// <param name="objectName">The name of the node to be deleted, as attached to the master parent node</param>
-        public DeleteObject(string objectName)
+        public DeleteObject(string objectName, SceneGraph removedObject = null)
         {
             ObjectName = objectName;
-            RemovedObject = null;
+            RemovedObject = removedObject;
             _isExecuted = false;
         }
         #endregion

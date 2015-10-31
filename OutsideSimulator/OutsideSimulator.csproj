@@ -67,7 +67,6 @@
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\IUndo.cs" />
     <Compile Include="Builders\MenuFactory.cs" />
-    <Compile Include="Commands\OutsideFileGenerator.cs" />
     <Compile Include="Commands\Undoables\DeleteObject.cs" />
     <Compile Include="Commands\Undoables\MoveObject.cs" />
     <Compile Include="Commands\Undoables\ReplaceRenderable.cs" />
@@ -134,6 +133,12 @@
     <None Include="assets\Bench\tscn_bench.obj" />
     <None Include="assets\Bench\tscn_table.mtl" />
     <None Include="assets\Bench\tscn_table.obj" />
+    <None Include="assets\Rocks\rock_4.mtl" />
+    <None Include="assets\Rocks\rock_4.obj" />
+    <None Include="assets\Rocks\rock_5.mtl" />
+    <None Include="assets\Rocks\rock_5.obj" />
+    <None Include="assets\SimpleTree\SimpleTree.mtl" />
+    <None Include="assets\SimpleTree\SimpleTree.obj" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -144,7 +149,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -155,13 +159,24 @@
     <Content Include="assets\Bench\tablemap01.jpg" />
     <Content Include="assets\Crates\MetalWood.dds" />
     <Content Include="assets\Crates\Wood1.dds" />
-    <Content Include="assets\MenuBases\MainMenu.bmp" />
     <Content Include="assets\MenuBases\MainMenu.dds" />
+    <Content Include="assets\MenuBases\ModifySelected.dds" />
     <Content Include="assets\MenuButtons\ChangeFillColor.dds" />
+    <Content Include="assets\MenuButtons\DeleteObject.dds" />
+    <Content Include="assets\MenuButtons\DuplicateObject.dds" />
     <Content Include="assets\MenuButtons\ExitButton.dds" />
+    <Content Include="assets\MenuButtons\ModifySelected.dds" />
+    <Content Include="assets\MenuButtons\MoveObject.dds" />
     <Content Include="assets\MenuButtons\NewSimulation.dds" />
+    <Content Include="assets\MenuButtons\Screenshot.dds" />
+    <Content Include="assets\MenuButtons\Undo.dds" />
+    <Content Include="assets\MenuButtons\UseNextTexture.dds" />
+    <Content Include="assets\Rocks\rock_4_col.png" />
+    <Content Include="assets\SimpleTree\Combined.png" />
+    <Content Include="assets\SimpleTree\Combined2.png" />
     <Content Include="assets\Terrains\Sand.dds" />
     <Content Include="assets\Terrains\Sand.jpg" />
+    <Content Include="assets\Terrains\soil.dds" />
     <Content Include="Effects\BasicEffect\BasicEffect.fx" />
     <Content Include="Effects\MenuEffect\MenuEffect.fx" />
     <Content Include="Effects\TestEffect\TestEffect.fx" />

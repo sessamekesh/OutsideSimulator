@@ -101,6 +101,12 @@ namespace OutsideSimulator.Builders
                 OutsideSimulatorApp.GetInstance().CommandStack.Undo();
             });
 
+            MainMenu.AddAction("../../assets/MenuButtons/Screenshot.dds", () =>
+            {
+                OutsideSimulatorApp.GetInstance().MainMenu.ClearMenu();
+                OutsideSimulatorApp.GetInstance().PrintScreen();
+            });
+
             MainMenu.AddSubmenu("../../assets/MenuButtons/ModifySelected.dds", ModifySelectedMenu);
 
             MainMenu.AddAction("../../assets/MenuButtons/ExitButton.dds", () => { OutsideSimulatorApp.GetInstance().Close(); });

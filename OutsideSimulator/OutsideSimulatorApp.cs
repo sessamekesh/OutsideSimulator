@@ -122,8 +122,9 @@ namespace OutsideSimulator
 
             var xe = new XElement("OutsideSimulatorScene",
                 new XElement("Version", 1.0f),
-                new XElement("SceneGraph", SceneGraph.Serialize(SceneRootNode)),
-                new XElement("CommandStack", CommandStack.Serialize())
+                new XElement("SceneGraph", SceneGraph.Serialize(SceneRootNode))
+                // , new XElement("CommandStack", CommandStack.Serialize())
+                // I will add this back in... Maybe.
             );
 
             var sw = new System.IO.StreamWriter(saveDialog.FileName);
@@ -134,6 +135,43 @@ namespace OutsideSimulator
             }
 
             sw.Close();
+        }
+
+        /// <summary>
+        /// Grab a screenshot. Take a selfie!
+        /// </summary>
+        public void PrintScreen()
+        {
+            // Make sure the menu won't get in our way...
+            base.DrawScene();
+
+            using (var resource = SlimDX.Direct3D11.Resource.FromSwapChain<Texture2D>(SwapChain, 0))
+            {
+                RenderTargetView = new RenderTargetView(Device, resource);
+
+                ImmediateContext.ClearRenderTargetView(RenderTargetView, FillColor);
+                ImmediateContext.ClearDepthStencilView(DepthStencilView, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
+
+                // Render the scene...
+                ActiveRenderEffect.Render(SceneGraph.Children["Scene"], Camera, ProjMatrix);
+
+                // Render the menus...
+                MenuRenderEffect.Render(SceneGraph.Children["Menu"], Camera, ProjMatrix);
+
+                SwapChain.Present(0, SlimDX.DXGI.PresentFlags.None);
+
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.Filter = "JPEG image (*.jpg)|*.jpg";
+
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    Texture2D.SaveTextureToFile(ImmediateContext, resource, ImageFileFormat.Jpg, sfd.FileName);
+                }
+                else
+                {
+                    MessageBox.Show("Canceled save file. Bummer too, considering all the work was already done.");
+                }
+            }
         }
 
         /// <summary>
@@ -164,13 +202,15 @@ namespace OutsideSimulator
             var sg = SceneGraph.Deserialize(
                 (xe.Nodes().First((x) => (x as XElement).Name == "SceneGraph") as XElement).Nodes().First((x) => (x as XElement).Name == "SceneGraph").ToString()
             );
-            var cs = CommandStack.Deserialize(
-                (xe.Nodes().First((x) => (x as XElement).Name == "CommandStack") as XElement).Nodes().First((x) => (x as XElement).Name == "CommandStack").ToString()
-            );
+            // I will add this back in... Maybe.
+            //var cs = CommandStack.Deserialize(
+            //    (xe.Nodes().First((x) => (x as XElement).Name == "CommandStack") as XElement).Nodes().First((x) => (x as XElement).Name == "CommandStack").ToString()
+            //);
 
             SceneGraph.Children.Remove("Scene");
             SceneGraph.AttachChild("Scene", sg);
-            CommandStack = cs;
+            //CommandStack = cs;
+            CommandStack = new CommandStack();
         }
 
         /// <summary>
@@ -216,6 +256,10 @@ namespace OutsideSimulator
             else if (e.Control && e.KeyCode == Keys.O)
             {
                 LoadScene();
+            }
+            else if (e.Control && e.KeyCode == Keys.P)
+            {
+                PrintScreen();
             }
             else
             {

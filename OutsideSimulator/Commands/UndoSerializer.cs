@@ -29,6 +29,17 @@ namespace OutsideSimulator.Commands
 
                 return xe;
             }
+            else if (undo is DeleteObject)
+            {
+                var dd = undo as DeleteObject;
+
+                var xe = new XElement("DeleteObject");
+
+                xe.Add(new XElement("Name", dd.ObjectName));
+                xe.Add(new XElement("Node", Scene.SceneGraph.Serialize(dd.RemovedObject)));
+
+                return xe;
+            }
             else
             {
                 return null;
@@ -45,6 +56,13 @@ namespace OutsideSimulator.Commands
                 Renderable.IRenderable renderable = Renderable.RenderableFactory.Deserialize((xe.Nodes().First((x) => (x as XElement).Name == "Renderable") as XElement).FirstNode.ToString());
 
                 return new CreateObject(renderable, transform);
+            }
+            else if (xe.Name == "DeleteObject")
+            {
+                var name = (xe.Nodes().First((x) => (x as XElement).Name == "Name") as XElement).Value;
+                var node = Scene.SceneGraph.Deserialize((xe.Nodes().First((x) => (x as XElement).Name == "Node") as XElement).FirstNode.ToString());
+
+                return new DeleteObject(name, node);
             }
             else
             {
