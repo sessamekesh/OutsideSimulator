@@ -46,8 +46,8 @@ namespace OutsideSimulator.Scene
         {
             get
             {
-                return Submenus.Select((x) => x.Button)
-                    .Concat(Actions.Select((y) => y.Button))
+                return (ActiveMenu ?? this).Submenus.Select((x) => x.Button)
+                    .Concat((ActiveMenu ?? this).Actions.Select((y) => y.Button))
                     .ToArray();
             }
         }
@@ -272,13 +272,14 @@ namespace OutsideSimulator.Scene
                         && Button.IsMouseDown)
                     {
                         // Invoke action!
-                        if (Submenus.Count((x) => x.Button == Button) > 0)
+                        if ((ActiveMenu??this).Submenus.Count((x) => x.Button == Button) > 0)
                         {
-                            ActiveMenu = Submenus.First((x) => x.Button == Button).Menu;
+                            ActiveMenu = (ActiveMenu ?? this).Submenus.First((x) => x.Button == Button).Menu;
                         }
-                        else if (Actions.Count((x) => x.Button == Button) > 0)
+                        else if ((ActiveMenu ?? this).Actions.Count((x) => x.Button == Button) > 0)
                         {
-                            Actions.First((x) => x.Button == Button).Action.Invoke();
+                            (ActiveMenu ?? this).Actions.First((x) => x.Button == Button).Action.Invoke();
+                            ActiveMenu = null;
                         }
                         else
                         {
@@ -292,7 +293,7 @@ namespace OutsideSimulator.Scene
 
         public string GetTexturePath()
         {
-            return MenuFilename;
+            return (ActiveMenu ?? this).MenuFilename;
         }
         #endregion
 

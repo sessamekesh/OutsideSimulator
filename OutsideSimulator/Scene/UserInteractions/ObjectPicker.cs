@@ -28,6 +28,9 @@ namespace OutsideSimulator.Scene.UserInteractions
 
         public void OnMouseDown(MouseEventArgs e)
         {
+            if (OutsideSimulatorApp.GetInstance().MainMenu != null &&
+                OutsideSimulatorApp.GetInstance().MainMenu.ActiveMenu != null) return;
+
             if (e.Button == MouseButtons.Left)
                 ClickedNode = Picker.PickClosestObject(OutsideSimulatorApp.GetInstance().SceneRootNode, OutsideSimulatorApp.GetInstance().SceneCamera,
                     OutsideSimulatorApp.GetInstance().ProjectionMatrix, new SlimDX.Vector2(e.X, e.Y), new SlimDX.Vector2(
@@ -36,6 +39,10 @@ namespace OutsideSimulator.Scene.UserInteractions
 
         public void OnMouseUp(MouseEventArgs e)
         {
+            if (OutsideSimulatorApp.GetInstance().MainMenu != null &&
+                OutsideSimulatorApp.GetInstance().MainMenu.ActiveMenu != null)
+                return;
+
             if (e.Button == MouseButtons.Left)
                 if (ClickedNode == Picker.PickClosestObject(OutsideSimulatorApp.GetInstance().SceneRootNode, OutsideSimulatorApp.GetInstance().SceneCamera,
                     OutsideSimulatorApp.GetInstance().ProjectionMatrix, new SlimDX.Vector2(e.X, e.Y), new SlimDX.Vector2(
@@ -53,36 +60,45 @@ namespace OutsideSimulator.Scene.UserInteractions
             {
                 if (e.KeyCode == Keys.Delete)
                 {
-                    //
-                    // Delete selected node
-                    //
-
-                    // Get name of descendant
-                    var childName = OutsideSimulatorApp.GetInstance().SceneRootNode.Children.First((x) => x.Value == ClickedNode).Key;
-
-                    var removeAction = new Commands.Undoables.DeleteObject(childName);
-                    removeAction.Redo();
-
-                    OutsideSimulatorApp.GetInstance().CommandStack.Push(removeAction);
+                    DeleteSelected();
                 }
                 else if (e.KeyCode == Keys.Tab)
                 {
-                    //
-                    // Cycle through generation chain, swap out objects.
-                    //
-
-                    if (!(OutsideSimulatorApp.GetInstance().SceneRootNode.Children.Count((x) => x.Value == ClickedNode) > 0)) return;
-
-                    var childName = OutsideSimulatorApp.GetInstance().SceneRootNode.Children.First((x) => x.Value == ClickedNode).Key;
-                    var nextChain = Renderable.RenderableFactory.GetNextRenderableInModificationChain(ClickedNode.Renderable);
-
-                    if (nextChain != null)
-                    {
-                        var swapoutaction = new Commands.Undoables.ReplaceRenderable(childName, nextChain);
-                        swapoutaction.Redo();
-                        OutsideSimulatorApp.GetInstance().CommandStack.Push(swapoutaction);
-                    }
+                    GetNextRenderable();
                 }
+            }
+        }
+
+        public void DeleteSelected()
+        {
+            //
+            // Delete selected node
+            //
+
+            // Get name of descendant
+            var childName = OutsideSimulatorApp.GetInstance().SceneRootNode.Children.First((x) => x.Value == ClickedNode).Key;
+
+            var removeAction = new Commands.Undoables.DeleteObject(childName);
+            removeAction.Redo();
+
+            OutsideSimulatorApp.GetInstance().CommandStack.Push(removeAction);
+        }
+
+        public void GetNextRenderable()
+        {
+            //
+            // Cycle through generation chain, swap out objects.
+            //
+            if (!(OutsideSimulatorApp.GetInstance().SceneRootNode.Children.Count((x) => x.Value == ClickedNode) > 0)) return;
+
+            var childName = OutsideSimulatorApp.GetInstance().SceneRootNode.Children.First((x) => x.Value == ClickedNode).Key;
+            var nextChain = Renderable.RenderableFactory.GetNextRenderableInModificationChain(ClickedNode.Renderable);
+
+            if (nextChain != null)
+            {
+                var swapoutaction = new Commands.Undoables.ReplaceRenderable(childName, nextChain);
+                swapoutaction.Redo();
+                OutsideSimulatorApp.GetInstance().CommandStack.Push(swapoutaction);
             }
         }
     }

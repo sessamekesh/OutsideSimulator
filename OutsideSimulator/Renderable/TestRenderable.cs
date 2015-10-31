@@ -11,6 +11,8 @@ namespace OutsideSimulator.Renderable
     /// </summary>
     public class TestRenderable : IRenderable
     {
+        public static readonly float size = 2.2f;
+
         public virtual uint[] GetIndexList(string EffectName)
         {
             switch (EffectName)
@@ -50,14 +52,14 @@ namespace OutsideSimulator.Renderable
                 case Effects.EffectsGlobals.BasicEffectName:
                     return new[]
                     {
-                        new BasicEffectVertex { Pos = new SlimDX.Vector3(-1.0f, -1.0f, -1.0f), TexCoord = new SlimDX.Vector2(0.0f, 1.0f) },
-                        new BasicEffectVertex { Pos = new SlimDX.Vector3(-1.0f, 1.0f, -1.0f), TexCoord = new SlimDX.Vector2(0.0f, 0.0f) },
-                        new BasicEffectVertex { Pos = new SlimDX.Vector3(1.0f, 1.0f, -1.0f), TexCoord = new SlimDX.Vector2(1.0f, 0.0f) },
-                        new BasicEffectVertex { Pos = new SlimDX.Vector3(1.0f, -1.0f, -1.0f), TexCoord = new SlimDX.Vector2(1.0f, 1.0f) },
-                        new BasicEffectVertex { Pos = new SlimDX.Vector3(-1.0f, -1.0f, 1.0f), TexCoord = new SlimDX.Vector2(1.0f, 1.0f) },
-                        new BasicEffectVertex { Pos = new SlimDX.Vector3(-1.0f, 1.0f, 1.0f), TexCoord = new SlimDX.Vector2(1.0f, 0.0f) },
-                        new BasicEffectVertex { Pos = new SlimDX.Vector3(1.0f, 1.0f, 1.0f), TexCoord = new SlimDX.Vector2(0.0f, 0.0f) },
-                        new BasicEffectVertex { Pos = new SlimDX.Vector3(1.0f, -1.0f, 1.0f), TexCoord = new SlimDX.Vector2(0.0f, 1.0f) }
+                        new BasicEffectVertex { Pos = new SlimDX.Vector3(-size, -size, -size), TexCoord = new SlimDX.Vector2(0.0f, 1.0f) },
+                        new BasicEffectVertex { Pos = new SlimDX.Vector3(-size, size, -size), TexCoord = new SlimDX.Vector2(0.0f, 0.0f) },
+                        new BasicEffectVertex { Pos = new SlimDX.Vector3(size, size, -size), TexCoord = new SlimDX.Vector2(1.0f, 0.0f) },
+                        new BasicEffectVertex { Pos = new SlimDX.Vector3(size, -size, -size), TexCoord = new SlimDX.Vector2(1.0f, 1.0f) },
+                        new BasicEffectVertex { Pos = new SlimDX.Vector3(-size, -size, size), TexCoord = new SlimDX.Vector2(1.0f, 1.0f) },
+                        new BasicEffectVertex { Pos = new SlimDX.Vector3(-size, size, size), TexCoord = new SlimDX.Vector2(1.0f, 0.0f) },
+                        new BasicEffectVertex { Pos = new SlimDX.Vector3(size, size, size), TexCoord = new SlimDX.Vector2(0.0f, 0.0f) },
+                        new BasicEffectVertex { Pos = new SlimDX.Vector3(size, -size, size), TexCoord = new SlimDX.Vector2(0.0f, 1.0f) }
 
                     }.Cast<object>().ToArray();
                 case Effects.EffectsGlobals.TestEffectName:

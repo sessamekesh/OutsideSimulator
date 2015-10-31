@@ -16,7 +16,33 @@ namespace OutsideSimulator.Builders
         public static Menu BuildMainMenu()
         {
             Menu MainMenu = new Menu("../../assets/MenuBases/MainMenu.dds", System.Windows.Forms.Keys.Escape);
+            Menu ModifySelectedMenu = new Menu("../../assets/MenuBases/ModifySelected.dds", null);
 
+            //
+            // Modify Selected Menu
+            //
+            ModifySelectedMenu.AddAction("../../assets/MenuButtons/MoveObject.dds", () =>
+            {
+                if (OutsideSimulatorApp.GetInstance().ObjectPicker.ClickedNode == null) return;
+
+                Scene.UserInteractions.ObjectMover.getInstance().SetNode(
+                    OutsideSimulatorApp.GetInstance().ObjectPicker.ClickedNode
+                );
+            });
+
+            ModifySelectedMenu.AddAction("../../assets/MenuButtons/UseNextTexture.dds", () =>
+            {
+                OutsideSimulatorApp.GetInstance().ObjectPicker.GetNextRenderable();
+            });
+
+            ModifySelectedMenu.AddAction("../../assets/MenuButtons/DeleteObject.dds", () =>
+            {
+                OutsideSimulatorApp.GetInstance().ObjectPicker.DeleteSelected();
+            });
+
+            //
+            // Main Menu
+            //
             MainMenu.AddAction("../../assets/MenuButtons/NewSimulation.dds", () =>
             {
                 // Create a new simulation
@@ -38,6 +64,13 @@ namespace OutsideSimulator.Builders
                     System.Windows.Forms.MessageBox.Show("Pick background color aborted", "Outside Simulator 2015");
                 }
             });
+
+            MainMenu.AddAction("../../assets/MenuButtons/Undo.dds", () =>
+            {
+                OutsideSimulatorApp.GetInstance().CommandStack.Undo();
+            });
+
+            MainMenu.AddSubmenu("../../assets/MenuButtons/ModifySelected.dds", ModifySelectedMenu);
 
             MainMenu.AddAction("../../assets/MenuButtons/ExitButton.dds", () => { OutsideSimulatorApp.GetInstance().Close(); });
 

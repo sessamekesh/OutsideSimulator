@@ -13,17 +13,17 @@ using OutsideSimulator.Renderable;
 
 namespace OutsideSimulator.Scene.UserInteractions
 {
-    public class ObjectSpawner : KeyDownSubscriber, MouseDownSubscriber, MouseWheelSubscriber, TimerTickSubscriber
+    public class ObjectSpawner : KeyDownSubscriber, MouseDownSubscriber, TimerTickSubscriber
     {
         public static readonly List<Type> RenderableList = new List<Type>(new Type[]
         {
             typeof(TestRenderable),
+            typeof(TableRenderable),
+            typeof(BenchRenderable),
             typeof(RockRenderable),
             typeof(TreeRenderable),
             typeof(TerrainRenderable)
         });
-
-        protected static float frontDist = 15.0f;
 
         #region State Information
         public bool IsPlacing { get; protected set; }
@@ -53,7 +53,7 @@ namespace OutsideSimulator.Scene.UserInteractions
                 CreateObject = new CreateObject(
                     CreatedRenderable,
                     Matrix.Translation(SceneCamera.Position
-                    + lav * frontDist));
+                    + lav * ObjectMover.frontDist));
                 CreateObject.Redo();
                 OutsideSimulatorApp.GetInstance().ObjectPicker.ClickedNode = CreateObject.ParentNode.Children[CreateObject.ChildName];
             }
@@ -71,7 +71,7 @@ namespace OutsideSimulator.Scene.UserInteractions
                 CreateObject = new CreateObject(
                     CreatedRenderable,
                     Matrix.Translation(SceneCamera.Position
-                    + lav * frontDist));
+                    + lav * ObjectMover.frontDist));
                 CreateObject.Redo();
                 OutsideSimulatorApp.GetInstance().ObjectPicker.ClickedNode = CreateObject.ParentNode.Children[CreateObject.ChildName];
             }
@@ -112,22 +112,25 @@ namespace OutsideSimulator.Scene.UserInteractions
         {
             if (IsPlacing)
             {
-                Cameras.Camera SceneCamera = OutsideSimulatorApp.GetInstance().SceneCamera;
-                Vector3 lav = (SceneCamera.LookAt - SceneCamera.Position);
-                lav.Normalize();
-                CreateObject.ParentNode.Children[CreateObject.ChildName].Translation =
-                    OutsideSimulatorApp.GetInstance().SceneCamera.Position + lav * frontDist;
+                ObjectMover.getInstance().MoveObjectToInFrontOfCamera(CreateObject.ParentNode.Children[CreateObject.ChildName]);
             }
-        }
-
-        public void OnMouseWheel(MouseEventArgs e)
-        {
-            frontDist += e.Delta * 0.008f;
         }
         #endregion
 
         protected void PlaceObject()
         {
+            //
+            // Create a new CreateObject, for the newest location
+            //
+            var coToSave = new CreateObject(CreateObject.ParentNode.Children[CreateObject.ChildName].Renderable,
+                CreateObject.ParentNode.Children[CreateObject.ChildName].Transform);
+            CreateObject.Undo();
+            CreateObject = coToSave;
+            CreateObject.Redo();
+
+            //
+            // Place
+            //
             OutsideSimulatorApp.GetInstance().CommandStack.Push(CreateObject);
             IsPlacing = false;
 

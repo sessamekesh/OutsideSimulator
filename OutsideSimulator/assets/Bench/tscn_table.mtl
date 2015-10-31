@@ -1,0 +1,13 @@
+# Blender MTL File: 'tscn_table_f.blend'
+# Material Count: 1
+
+newmtl Wood.001
+Ns 17.647059
+Ka 0.000000 0.000000 0.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.121000 0.121000 0.121000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Bump 57975_Rustic_Table_and_Bench_tscn\\textures\\tablebump01.jpg
+map_Kd 57975_Rustic_Table_and_Bench_tscn\\textures\\tablemap01.jpg

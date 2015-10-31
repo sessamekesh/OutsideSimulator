@@ -444,6 +444,15 @@ namespace OutsideSimulator
             }
         }
 
+        public OutsideSimulator.Scene.Menu MainMenu
+        {
+            get
+            {
+                if (SceneGraph == null) return null;
+                else return SceneGraph.Children["Menu"].Renderable as OutsideSimulator.Scene.Menu;
+            }
+        }
+
         public Camera SceneCamera
         {
             get

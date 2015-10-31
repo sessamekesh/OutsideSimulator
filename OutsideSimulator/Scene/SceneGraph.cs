@@ -211,6 +211,27 @@ namespace OutsideSimulator.Scene
             return null;
         }
 
+        public string GetDescendentName(SceneGraph Child)
+        {
+            if (Children.ContainsValue(Child))
+            {
+                return Children.First((x) => x.Value == Child).Key;
+            }
+            else
+            {
+                foreach (var Childd in Children)
+                {
+                    var res = Childd.Value.GetDescendentName(Child);
+                    if (res != null)
+                    {
+                        return res;
+                    }
+                }
+            }
+
+            return null;
+        }
+
         public static SceneGraph Deserialize(string XMLString)
         {
             // TODO KAM: Complete the deserialize here (and also in your actions, camera...)
