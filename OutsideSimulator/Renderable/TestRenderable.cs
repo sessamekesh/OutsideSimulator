@@ -11,7 +11,7 @@ namespace OutsideSimulator.Renderable
     /// </summary>
     public class TestRenderable : IRenderable
     {
-        public uint[] GetIndexList(string EffectName)
+        public virtual uint[] GetIndexList(string EffectName)
         {
             switch (EffectName)
             {
@@ -43,7 +43,7 @@ namespace OutsideSimulator.Renderable
             }
         }
 
-        public object[] GetVertexList(string EffectName)
+        public virtual object[] GetVertexList(string EffectName)
         {
             switch (EffectName)
             {
@@ -77,9 +77,9 @@ namespace OutsideSimulator.Renderable
             }
         }
 
-        public string GetTexturePath()
+        public virtual string GetTexturePath()
         {
-            return "../../assets/Crates/Wood1.jpg";
+            return "../../assets/Crates/Wood1.dds";
         }
 
         private readonly static string RenderableName = "TestRenderable";

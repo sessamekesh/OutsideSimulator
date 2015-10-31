@@ -69,6 +69,7 @@
     <Compile Include="Builders\MenuFactory.cs" />
     <Compile Include="Commands\OutsideFileGenerator.cs" />
     <Compile Include="Commands\Undoables\DeleteObject.cs" />
+    <Compile Include="Commands\Undoables\ReplaceRenderable.cs" />
     <Compile Include="Commands\UndoSerializer.cs" />
     <Compile Include="D3DCore\Dirtyable.cs" />
     <Compile Include="D3DCore\GeometryGenerator.cs" />
@@ -98,7 +99,9 @@
     <Compile Include="Renderable\CannotResolveIndicesException.cs" />
     <Compile Include="Renderable\CannotResolveVerticesException.cs" />
     <Compile Include="Renderable\MenuButton.cs" />
+    <Compile Include="Renderable\MetalWoodTextureDecorator.cs" />
     <Compile Include="Renderable\RenderableFactory.cs" />
+    <Compile Include="Renderable\RockRenderable.cs" />
     <Compile Include="Renderable\TerrainRenderable.cs" />
     <Compile Include="Renderable\TestRenderable.cs" />
     <Compile Include="Scene\Cameras\Camera.cs" />
@@ -135,8 +138,8 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="assets\Crates\MetalWood.dds" />
     <Content Include="assets\Crates\Wood1.dds" />
-    <Content Include="assets\Crates\Wood1.jpg" />
     <Content Include="assets\MenuBase.bmp" />
     <Content Include="assets\MenuBases\MainMenu.bmp" />
     <Content Include="assets\MenuBases\MainMenu.dds" />

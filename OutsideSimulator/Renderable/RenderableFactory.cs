@@ -37,6 +37,12 @@ namespace OutsideSimulator.Renderable
 
                 return ts;
             }
+            else if (toSave is MetalWoodTextureDecorator)
+            {
+                MetalWoodTextureDecorator tr = toSave as MetalWoodTextureDecorator;
+                XElement ts = new XElement("MetalWoodTextureCrate", "");
+                return ts;
+            }
             else if (toSave is TestRenderable)
             {
                 TestRenderable tr = toSave as TestRenderable;
@@ -46,6 +52,31 @@ namespace OutsideSimulator.Renderable
             else
             {
                 throw new InvalidOperationException("Cannot serialize - did not recognize renderable type");
+            }
+        }
+
+        /// <summary>
+        /// JAVA, YOU DON'T HAVE A MONOPOLY ON LONG VARIABLE NAMES
+        /// </summary>
+        /// <param name="oldRenderable">The existing renderable</param>
+        /// <returns></returns>
+        public static IRenderable GetNextRenderableInModificationChain(IRenderable oldRenderable)
+        {
+            // Cycle to next decorator in textures
+            if (oldRenderable is TestRenderable)
+            {
+                if (oldRenderable is MetalWoodTextureDecorator)
+                {
+                    return new TestRenderable();
+                }
+                else
+                {
+                    return new MetalWoodTextureDecorator(oldRenderable as TestRenderable);
+                }
+            }
+            else
+            {
+                return null;
             }
         }
 
@@ -74,6 +105,8 @@ namespace OutsideSimulator.Renderable
                     return new TerrainRenderable(width, depth, xsubs, zsubs);
                 case "TestRenderable":
                     return new TestRenderable();
+                case "MetalWoodTextureCrate":
+                    return new MetalWoodTextureDecorator(new TestRenderable());
                 default:
                     return null;
             }

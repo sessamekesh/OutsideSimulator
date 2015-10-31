@@ -47,15 +47,40 @@ namespace OutsideSimulator.Scene.UserInteractions
 
         public void OnKeyUp(KeyEventArgs e)
         {
-            if (e.Control == false && e.Shift == false && e.Alt == false && e.KeyCode == Keys.Delete)
+            if (ClickedNode == null) return;
+
+            if (e.Control == false && e.Shift == false && e.Alt == false)
             {
-                // Get name of descendant
-                var childName = OutsideSimulatorApp.GetInstance().SceneRootNode.Children.First((x) => x.Value == ClickedNode).Key;
+                if (e.KeyCode == Keys.Delete)
+                {
+                    //
+                    // Delete selected node
+                    //
 
-                var removeAction = new Commands.Undoables.DeleteObject(childName);
-                removeAction.Redo();
+                    // Get name of descendant
+                    var childName = OutsideSimulatorApp.GetInstance().SceneRootNode.Children.First((x) => x.Value == ClickedNode).Key;
 
-                OutsideSimulatorApp.GetInstance().CommandStack.Push(removeAction);
+                    var removeAction = new Commands.Undoables.DeleteObject(childName);
+                    removeAction.Redo();
+
+                    OutsideSimulatorApp.GetInstance().CommandStack.Push(removeAction);
+                }
+                else if (e.KeyCode == Keys.Tab)
+                {
+                    //
+                    // Cycle through generation chain, swap out objects.
+                    //
+
+                    var childName = OutsideSimulatorApp.GetInstance().SceneRootNode.Children.First((x) => x.Value == ClickedNode).Key;
+                    var nextChain = Renderable.RenderableFactory.GetNextRenderableInModificationChain(ClickedNode.Renderable);
+
+                    if (nextChain != null)
+                    {
+                        var swapoutaction = new Commands.Undoables.ReplaceRenderable(childName, nextChain);
+                        swapoutaction.Redo();
+                        OutsideSimulatorApp.GetInstance().CommandStack.Push(swapoutaction);
+                    }
+                }
             }
         }
     }

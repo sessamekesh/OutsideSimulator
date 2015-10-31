@@ -18,6 +18,7 @@ namespace OutsideSimulator.Scene.UserInteractions
         public static readonly List<Type> RenderableList = new List<Type>(new Type[]
         {
             typeof(TestRenderable),
+            typeof(RockRenderable),
             typeof(TerrainRenderable)
         });
 
