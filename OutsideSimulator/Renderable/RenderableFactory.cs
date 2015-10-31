@@ -40,14 +40,24 @@ namespace OutsideSimulator.Renderable
             else if (toSave is MetalWoodTextureDecorator)
             {
                 MetalWoodTextureDecorator tr = toSave as MetalWoodTextureDecorator;
-                XElement ts = new XElement("MetalWoodTextureCrate", "");
+                XElement ts = new XElement("MetalWoodTextureCrate");
                 return ts;
             }
             else if (toSave is TestRenderable)
             {
                 TestRenderable tr = toSave as TestRenderable;
-                XElement ts = new XElement("TestRenderable", "");
+                XElement ts = new XElement("TestRenderable");
                 return ts;
+            }
+            else if (toSave is SharpRockDecorator)
+            {
+                SharpRockDecorator tr = toSave as SharpRockDecorator;
+                XElement ts = new XElement("SharpRockRenderable");
+                return ts;
+            }
+            else if (toSave is RockRenderable)
+            {
+                return new XElement("RockRenderable");
             }
             else
             {
@@ -72,6 +82,17 @@ namespace OutsideSimulator.Renderable
                 else
                 {
                     return new MetalWoodTextureDecorator(oldRenderable as TestRenderable);
+                }
+            }
+            else if (oldRenderable is RockRenderable)
+            {
+                if (oldRenderable is SharpRockDecorator)
+                {
+                    return new RockRenderable();
+                }
+                else
+                {
+                    return new SharpRockDecorator(oldRenderable as RockRenderable);
                 }
             }
             else
@@ -107,6 +128,10 @@ namespace OutsideSimulator.Renderable
                     return new TestRenderable();
                 case "MetalWoodTextureCrate":
                     return new MetalWoodTextureDecorator(new TestRenderable());
+                case "RockRenderable":
+                    return new RockRenderable();
+                case "SharpRockRenderable":
+                    return new SharpRockDecorator(new RockRenderable());
                 default:
                     return null;
             }

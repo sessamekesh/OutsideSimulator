@@ -17,9 +17,14 @@ namespace OutsideSimulator.Renderable
         protected Vector2[] uvCoords;
         protected uint[] indices;
 
+        public virtual string GetAssetPath()
+        {
+            return "../../assets/Rocks/rock_4.obj";
+        }
+
         public RockRenderable()
         {
-            var obj = FileFormatObj.Load("../../assets/Rocks/rock_4.obj", true);
+            var obj = FileFormatObj.Load(GetAssetPath(), true);
 
             List<Vector3> vertList = new List<Vector3>();
             List<Vector2> uvList = new List<Vector2>();

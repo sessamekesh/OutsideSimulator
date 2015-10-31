@@ -102,6 +102,7 @@
     <Compile Include="Renderable\MetalWoodTextureDecorator.cs" />
     <Compile Include="Renderable\RenderableFactory.cs" />
     <Compile Include="Renderable\RockRenderable.cs" />
+    <Compile Include="Renderable\SharpRockDecorator.cs" />
     <Compile Include="Renderable\TerrainRenderable.cs" />
     <Compile Include="Renderable\TestRenderable.cs" />
     <Compile Include="Scene\Cameras\Camera.cs" />
