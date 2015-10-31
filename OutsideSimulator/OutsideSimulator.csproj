@@ -104,7 +104,7 @@
     <Compile Include="Renderable\MenuButton.cs" />
     <Compile Include="Renderable\MetalWoodTextureDecorator.cs" />
     <Compile Include="Renderable\PalmTreeRenderable.cs" />
-    <Compile Include="Renderable\RenderableFactory.cs" />
+    <Compile Include="Builders\RenderableFactory.cs" />
     <Compile Include="Renderable\RockRenderable.cs" />
     <Compile Include="Renderable\SandTextureTerrain.cs" />
     <Compile Include="Renderable\SharpRockDecorator.cs" />

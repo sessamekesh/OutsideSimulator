@@ -26,6 +26,17 @@ namespace OutsideSimulator.Renderable
             {
                 return null;
             }
+            else if (toSave is SandTextureTerrain)
+            {
+                TerrainRenderable tr = toSave as TerrainRenderable;
+                XElement ts = new XElement("SandTerrainRenderable",
+                    new XElement("width", tr.Width),
+                    new XElement("depth", tr.Depth),
+                    new XElement("xSubdivisions", tr.XSubdivisions),
+                    new XElement("zSubdivisions", tr.ZSubdivisions));
+
+                return ts;
+            }
             else if (toSave is TerrainRenderable)
             {
                 TerrainRenderable tr = toSave as TerrainRenderable;
@@ -58,6 +69,22 @@ namespace OutsideSimulator.Renderable
             else if (toSave is RockRenderable)
             {
                 return new XElement("RockRenderable");
+            }
+            else if (toSave is BenchRenderable)
+            {
+                return new XElement("BenchRenderable");
+            }
+            else if (toSave is PalmTreeRenderable)
+            {
+                return new XElement("PalmTreeRenderable");
+            }
+            else if (toSave is TreeRenderable)
+            {
+                return new XElement("TreeRenderable");
+            }
+            else if (toSave is TableRenderable)
+            {
+                return new XElement("TableRenderable");
             }
             else
             {
@@ -140,12 +167,22 @@ namespace OutsideSimulator.Renderable
 
             switch (data.Name.LocalName)
             {
+                case "SandTerrainRenderable":
+                    {
+                        float width = float.Parse((data.Nodes().First((x) => (x as XElement).Name == "width") as XElement).Value);
+                        float depth = float.Parse((data.Nodes().First((x) => (x as XElement).Name == "depth") as XElement).Value);
+                        uint xsubs = uint.Parse((data.Nodes().First((x) => (x as XElement).Name == "xSubdivisions") as XElement).Value);
+                        uint zsubs = uint.Parse((data.Nodes().First((x) => (x as XElement).Name == "zSubdivisions") as XElement).Value);
+                        return new SandTextureTerrain(new TerrainRenderable(width, depth, xsubs, zsubs));
+                    }
                 case "TerrainRenderable":
-                    float width = float.Parse((data.Nodes().First((x) => (x as XElement).Name == "width") as XElement).Value);
-                    float depth  = float.Parse((data.Nodes().First((x) => (x as XElement).Name == "depth") as XElement).Value);
-                    uint xsubs = uint.Parse((data.Nodes().First((x) => (x as XElement).Name == "xSubdivisions") as XElement).Value);
-                    uint zsubs = uint.Parse((data.Nodes().First((x) => (x as XElement).Name == "zSubdivisions") as XElement).Value);
-                    return new TerrainRenderable(width, depth, xsubs, zsubs);
+                    {
+                        float width = float.Parse((data.Nodes().First((x) => (x as XElement).Name == "width") as XElement).Value);
+                        float depth = float.Parse((data.Nodes().First((x) => (x as XElement).Name == "depth") as XElement).Value);
+                        uint xsubs = uint.Parse((data.Nodes().First((x) => (x as XElement).Name == "xSubdivisions") as XElement).Value);
+                        uint zsubs = uint.Parse((data.Nodes().First((x) => (x as XElement).Name == "zSubdivisions") as XElement).Value);
+                        return new TerrainRenderable(width, depth, xsubs, zsubs);
+                    }
                 case "TestRenderable":
                     return new TestRenderable();
                 case "MetalWoodTextureCrate":
@@ -154,6 +191,14 @@ namespace OutsideSimulator.Renderable
                     return new RockRenderable();
                 case "SharpRockRenderable":
                     return new SharpRockDecorator(new RockRenderable());
+                case "BenchRenderable":
+                    return new BenchRenderable();
+                case "PalmTreeRenderable":
+                    return new PalmTreeRenderable(new TreeRenderable());
+                case "TreeRenderable":
+                    return new TreeRenderable();
+                case "TableRenderable":
+                    return new TableRenderable();
                 default:
                     return null;
             }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,6 +32,38 @@ namespace OutsideSimulator.Builders
             ModifySelectedMenu.AddAction("../../assets/MenuButtons/UseNextTexture.dds", () =>
             {
                 OutsideSimulatorApp.GetInstance().ObjectPicker.GetNextRenderable();
+            });
+
+            ModifySelectedMenu.AddAction("../../assets/MenuButtons/DuplicateObject.dds", () =>
+            {
+                // Create a new object, but at a small distance away from where the currently selected
+                //  object is placed.
+
+                var active = OutsideSimulatorApp.GetInstance().ObjectPicker.ClickedNode;
+
+                Renderable.IRenderable newRenderable;
+                SlimDX.Matrix newTransform;
+
+                if (active == null) return;
+
+                // RenderableFactory to create a duplicate
+                // Cheap trick, I know...
+                newRenderable = Renderable.RenderableFactory.Deserialize(Renderable.RenderableFactory.Serialize(active.Renderable).ToString());
+
+                // Transformation will be simply bounding box x direction
+                newTransform = SlimDX.Matrix.Identity * active.Transform;
+
+                newTransform *= SlimDX.Matrix.Translation(
+                    new SlimDX.Vector3(
+                        active.GetBoundingBox().Value.Maximum.X * 2.0f,
+                        0.0f,
+                        0.0f
+                    )
+                );
+
+                var co = new Commands.Undoables.CreateObject(newRenderable, newTransform);
+                co.Redo();
+                OutsideSimulatorApp.GetInstance().CommandStack.Push(co);
             });
 
             ModifySelectedMenu.AddAction("../../assets/MenuButtons/DeleteObject.dds", () =>
